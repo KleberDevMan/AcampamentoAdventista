@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Acampamento Adventista</string>
+    <string name="roteiro">Roteiro</string>
+    <string name="compartilhar">Compartilhar</string>
+    <string name="musicas">Músicas</string>
+
+    <string name="hello_blank_fragment">Olá fragmento vazio</string>
+
+    <string name="segunda">Segunda</string>
+    <string name="terca">Terça</string>
+    <string name="sexta">Sexta</string>
+    <string name="sabado">Sabado</string>
+    <string name="domingo">Domingo</string>
+    <string name="meditacao">Meditação</string>
+    <string name="news">Notícias</string>
+    <string name="contato">Contatos</string>
+    <string name="title_news">Jornal do Retiro</string>
+</resources>
