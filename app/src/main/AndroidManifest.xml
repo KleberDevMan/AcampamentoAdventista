@@ -22,16 +22,24 @@
         </activity>
         <activity
             android:name=".activity.ListaMusicasActivity"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme2" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
         <activity
             android:name=".activity.RoteiroActivity"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.NewsActivity"
             android:theme="@style/AppTheme2" />
-    </application>
+        <activity
+            android:name=".activity.MeditacaoActivity"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.ContatosActivity"
+            android:theme="@style/AppTheme" />
+</application>
 
-</manifest>
+    </manifest>

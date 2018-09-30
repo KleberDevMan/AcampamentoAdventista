@@ -14,7 +14,6 @@ public class MenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
     }
-
     public void btnMusicas(View botao) {
         Intent intencao = new Intent(this, ListaMusicasActivity.class);
         this.startActivity(intencao);
@@ -27,6 +26,13 @@ public class MenuActivity extends AppCompatActivity {
         Intent intencao = new Intent(this, NewsActivity.class);
         this.startActivity(intencao);
     }
-
+    public void btnContatos(View botao) {
+        Intent intencao = new Intent(this, ContatosActivity.class);
+        this.startActivity(intencao);
+    }
+    public void btnMeditacao(View botao) {
+        Intent intencao = new Intent(this, MeditacaoActivity.class);
+        this.startActivity(intencao);
+    }
 
 }

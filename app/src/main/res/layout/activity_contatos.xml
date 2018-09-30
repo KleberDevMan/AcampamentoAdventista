@@ -5,30 +5,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/AppTheme2"
-    tools:context=".activity.ListaMusicasActivity">
-
-    <include
-        android:id="@+id/buttons_override"
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+    android:theme="@style/AppTheme"
+    tools:context=".activity.ContatosActivity">
 
     <TextView
-        android:id="@+id/tituloMusicas"
+        android:id="@+id/tituloContatos"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:gravity="center_vertical|center_horizontal"
-        android:text="@string/titulo_musicas"
+        android:text="@string/titulo_contatos"
         android:textColor="@android:color/white"
         android:textSize="24dp"
         android:textStyle="bold"
         app:fontFamily="@font/aldrich" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/lista_musicas"
+        android:id="@+id/lista_contatos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="8dp"

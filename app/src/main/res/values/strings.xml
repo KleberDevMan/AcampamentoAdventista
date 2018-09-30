@@ -16,4 +16,7 @@
     <string name="news">News</string>
     <string name="contato">Contact</string>
     <string name="title_news">Journal of Retreat</string>
+    <string name="contatos">Contatos</string>
+    <string name="titulo_musicas">Músicas</string>
+    <string name="titulo_contatos">Contatos</string>
 </resources>
