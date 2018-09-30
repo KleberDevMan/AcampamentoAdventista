@@ -2,8 +2,8 @@ package com.example.kleber.acampamentoadventista.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -39,12 +39,13 @@ public class ListaMusicasActivity extends AppCompatActivity {
         //inicializa componentes
         recyclerView = findViewById(R.id.lista_musicas);
         musicas = new ArrayList<>();
-        searchView = findViewById(R.id.searchView);
+        searchView = findViewById(R.id.materialSearchView);
 
         //configurar toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle(getString(R.string.app_name));
-        setSupportActionBar( toolbar );
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("");
 
         //Configura RecyclerView
         recuperaMusicas();
@@ -63,7 +64,7 @@ public class ListaMusicasActivity extends AppCompatActivity {
                             public void onItemClick(View view, int position) {
                                 Musica m = musicas.get(position);
                                 Toast.makeText(getApplicationContext(),
-                                        "musica "+m.getNome()+" precionada",
+                                        "musica " + m.getNome() + " precionada",
                                         Toast.LENGTH_SHORT)
                                         .show();
                             }
@@ -72,7 +73,7 @@ public class ListaMusicasActivity extends AppCompatActivity {
                             public void onLongItemClick(View view, int position) {
                                 Musica m = musicas.get(position);
                                 Toast.makeText(getApplicationContext(),
-                                        "musica "+m.getNome()+" precionada com CLICK LONGO",
+                                        "musica " + m.getNome() + " precionada com CLICK LONGO",
                                         Toast.LENGTH_SHORT)
                                         .show();
                             }
@@ -85,32 +86,83 @@ public class ListaMusicasActivity extends AppCompatActivity {
         );
 
 
-        //Configura os métodos para o onSearchView
+        //ouve eventos do onSearchView
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            //chamado quando o user confirma o que digitor
             @Override
             public boolean onQueryTextSubmit(String query) {
-                return false;
+                if (query != null && !query.isEmpty()) {
+                    //converte o testo em letras minusculas
+                    pesquisarMusicas(query.toLowerCase());
+                }
+                return true;
             }
-
+            //chamado em tempo de execucao
             @Override
             public boolean onQueryTextChange(String newText) {
-                return false;
+                if (newText != null && !newText.isEmpty()) {
+                    //converte o testo em letras minusculas
+                    pesquisarMusicas(newText.toLowerCase());
+                }
+                return true;
             }
         });
+        //ouve comportamento da SeachView
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            //assim que o SeachView é EXIBIDO
             @Override
             public void onSearchViewShown() {
 
             }
-
+            //assim que o SeachView é FECHADO
             @Override
             public void onSearchViewClosed() {
-
+                recarregarMusicas();
             }
         });
-
     }
 
+    //OUVIR O BTN VOLTAR
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // se for a seta voltar
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //RECARREGA A LISTA COM TODAS AS MUSICAS
+    private void recarregarMusicas() {
+        adaptadorMusicas = new AdaptadorMusicas(this, musicas);
+        recyclerView.setAdapter(adaptadorMusicas);
+        adaptadorMusicas.notifyDataSetChanged();
+    }
+
+    //LISTA AS MUSICAS POR PARAMETRO
+    private void pesquisarMusicas(String texto) {
+        List<Musica> musciasBusca = new ArrayList<>();
+
+        //busca na lista de musicas e salva em uma outra lista
+        for (Musica musica : musicas) {
+
+            String nome = musica.getNome().toLowerCase();
+            String cantor = musica.getCantor().toLowerCase();
+
+            if (nome.contains(texto) || cantor.contains(texto)) {
+                musciasBusca.add(musica);
+            }
+        }
+
+        //exibe na recycler uma lista de musicas filtrada
+        adaptadorMusicas = new AdaptadorMusicas(this, musciasBusca);
+        recyclerView.setAdapter(adaptadorMusicas);
+        adaptadorMusicas.notifyDataSetChanged();
+    }
+
+    //RECUPERA AS MUSICAS VINDAS DO BANCO
     private void recuperaMusicas() {
         musicas.add(new Musica("Falar com Deus", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
         musicas.add(new Musica("Santo dia do Senhor", "letra", "ministério jovem", carregaImagem(R.drawable.download)));
@@ -120,21 +172,27 @@ public class ListaMusicasActivity extends AppCompatActivity {
         musicas.add(new Musica("Dez mil razões", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
     }
 
+    //CONVERTE IMAGENS SALVAS NOS RECURSOS EM BITMAP
     private Bitmap carregaImagem(int id) {
         return BitmapFactory
                 .decodeResource(getResources(), id);
     }
 
-    //INFLANDO O LUPA NA BARRA NO ACTION_BAR DA PAGINA DE NOTICIAS
+    //INFLANDO ITENS_DE_ MENU NA ACTION_BAR
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater = getMenuInflater();
-        //o caminho do menu
-        menuInflater.inflate(R.menu.menu_lupa, menu);
+        // add o btnVoltar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        //recupero o item lupa
-        MenuItem item = menu.findItem(R.id.menu_lupa);
-        searchView.setMenuItem( item );
+        MenuInflater inflater = getMenuInflater();
+        // add o btnPesquisa
+        inflater.inflate(R.menu.menu_pesquisa, menu);
+        MenuItem item = menu.findItem(R.id.menu_pesquisa);
+        searchView.setMenuItem(item);
+
         return true;
     }
 }

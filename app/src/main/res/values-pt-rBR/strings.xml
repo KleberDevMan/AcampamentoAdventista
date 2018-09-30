@@ -19,4 +19,5 @@
     <string name="contatos">Contatos</string>
     <string name="titulo_musicas">Músicas</string>
     <string name="titulo_contatos">Contatos</string>
+    <string name="titulo_item_men_pesquisar">Pesquisar</string>
 </resources>

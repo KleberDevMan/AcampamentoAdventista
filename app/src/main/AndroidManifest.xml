@@ -3,6 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.kleber.acampamentoadventista">
 
+    <!-- recursos necessarios -->
+    <!-- so vai aparecer na play store para celulares com camera -->
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <!-- permissoes necessarias -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -22,7 +32,9 @@
         </activity>
         <activity
             android:name=".activity.ListaMusicasActivity"
-            android:theme="@style/AppTheme2" />
+            android:parentActivityName=".activity.MenuActivity"
+            android:theme="@style/AppTheme2"
+            tools:targetApi="jelly_bean" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -36,10 +48,23 @@
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".activity.MeditacaoActivity"
-            android:theme="@style/AppTheme" />
+            android:parentActivityName=".activity.MenuActivity"
+            android:theme="@style/AppTheme"
+            tools:targetApi="jelly_bean" />
         <activity
             android:name=".activity.ContatosActivity"
-            android:theme="@style/AppTheme" />
-</application>
+            android:parentActivityName=".activity.MenuActivity"
+            android:theme="@style/AppTheme"
+            tools:targetApi="jelly_bean" />
+        <activity
+            android:name=".activity.CompartilharActivity"
+            android:parentActivityName=".activity.MenuActivity"
+            tools:targetApi="jelly_bean" />
+        <activity
+            android:name=".activity.MolduraActivity"
+            android:parentActivityName=".activity.CompartilharActivity"
+            android:theme="@style/AppTheme2"
+            tools:targetApi="jelly_bean" />
+    </application>
 
-    </manifest>
+</manifest>

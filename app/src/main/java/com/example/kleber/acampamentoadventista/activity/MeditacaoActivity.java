@@ -4,6 +4,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorDePaginas;
@@ -29,6 +30,14 @@ public class MeditacaoActivity extends AppCompatActivity {
         tabLayout = findViewById(R.id.tablayoutMeditacao);
         viewPager = findViewById(R.id.pagerMeditacao);
 
+        //configura toolbar
+        //add o backButton a toolbar
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+
         //adiciona fragmentos
         AdaptadorDePaginas adapter = new AdaptadorDePaginas(getSupportFragmentManager());
         adapter.AddFragment(new MeditacaoSextaFragment(), getString(R.string.sexta));
@@ -37,5 +46,14 @@ public class MeditacaoActivity extends AppCompatActivity {
         //configura a ViewPagina e sincroniza com os Tabs
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // se for a seta voltar
+        if (item.getItemId() == android.R.id.home) {
+            finish(); // fecha esta atividade e retorna à atividade de anterior (se houver)
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

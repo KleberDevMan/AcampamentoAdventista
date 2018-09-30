@@ -24,4 +24,9 @@
         <item name="tabPaddingEnd">30dp</item>
     </style>
 
+    <!-- stilo para o ActionBar SeachButton -->
+    <style name="actionBarComSeach" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
+
 </resources>

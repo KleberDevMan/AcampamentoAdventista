@@ -2,11 +2,11 @@
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="80dp"
     android:layout_margin="10dp"
     android:elevation="6dp"
-    app:cardBackgroundColor="@color/celulaMusica"
-    android:theme="@style/AppTheme2">
+    android:theme="@style/AppTheme2"
+    app:cardBackgroundColor="@color/celulaMusica">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,8 +15,8 @@
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/celula_album"
-            android:layout_width="73dp"
-            android:layout_height="64dp"
+            android:layout_width="63dp"
+            android:layout_height="55dp"
             android:layout_gravity="center_vertical"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
@@ -46,20 +46,18 @@
                 android:layout_marginTop="25dp"
                 android:text="Nome música"
                 android:textColor="@android:color/white"
-                android:textSize="24dp"
+                android:textSize="14sp"
                 android:textStyle="bold"
                 app:fontFamily="@font/aldrich" />
 
             <TextView
                 android:id="@+id/celula_cantor"
-                android:layout_width="match_parent"
+                android:layout_width="305dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_margin="5dp"
                 android:text="cantor"
-                android:textColor="@android:color/white"
-                android:textSize="18sp"
-                android:textStyle="bold"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="14sp"
                 app:fontFamily="@font/aldrich" />
         </LinearLayout>
     </LinearLayout>
