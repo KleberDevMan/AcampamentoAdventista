@@ -4,8 +4,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.support.v7.widget.Toolbar;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 
@@ -44,5 +48,26 @@ public class MolduraActivity extends AppCompatActivity {
             getSupportActionBar().setHomeAsUpIndicator(R.drawable.icon_close_branco_24dp);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_publicar, menu);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch ( item.getItemId() ) {
+            case R.id.ic_publicar:
+                Toast.makeText(this, "Publicando na rede social preferida", Toast.LENGTH_SHORT).show();
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
