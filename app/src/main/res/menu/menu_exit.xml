@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-
+    <item android:id="@+id/menu_pesquisa"
+        android:title="@string/titulo_item_men_pesquisar"
+        app:showAsAction="always"
+        android:icon="@drawable/icon_close_branco_24dp"/>
 
 </menu>

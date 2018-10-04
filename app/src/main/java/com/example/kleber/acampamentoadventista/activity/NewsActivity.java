@@ -15,6 +15,7 @@ import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorVideo;
 import com.example.kleber.acampamentoadventista.api.YouTubeSevice;
 import com.example.kleber.acampamentoadventista.helper.RetrofitConfig;
 import com.example.kleber.acampamentoadventista.helper.YouTubeConfig;
+import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Resultado;
 import com.example.kleber.acampamentoadventista.modelos.Video;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
@@ -31,9 +32,13 @@ public class NewsActivity extends AppCompatActivity {
 
     private RecyclerView recyclerVideos;
 
-    private List<Video> videos;
+//    private List<Video> videos;
     private AdaptadorVideo adaptadorVideo;
     private MaterialSearchView searchView;
+
+    //Modelos da API youTube
+    private List<Item> videos = new ArrayList<>();
+    private Resultado resultado;
 
     //Retrofit
     private Retrofit retrofit;
@@ -56,12 +61,8 @@ public class NewsActivity extends AppCompatActivity {
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        //Configura RecyclerView
+        //Recupera Videos
         recuperarVideos();
-        adaptadorVideo = new AdaptadorVideo(videos, this);
-        recyclerVideos.setHasFixedSize(true);
-        recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
-        recyclerVideos.setAdapter(adaptadorVideo);
 
         //ouve eventos do onSearchView
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
@@ -126,7 +127,9 @@ public class NewsActivity extends AppCompatActivity {
             public void onResponse(Call<Resultado> call, Response<Resultado> response) {
                 //Log.d("resultado", "resultado: " + response.toString());
                 Resultado resultado = response.body();
-                Log.d("resultado", "resultado: " + resultado.regionCode);
+                videos = resultado.items;
+                configurarRecyclerView();
+//                Log.d("resultado", "resultado: " + resultado.items.get(0).id.videoId );
             }
 
             @Override
@@ -134,9 +137,14 @@ public class NewsActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    public void configurarRecyclerView(){
 
-
+        adaptadorVideo = new AdaptadorVideo(videos, this);
+        recyclerVideos.setHasFixedSize(true);
+        recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
+        recyclerVideos.setAdapter(adaptadorVideo);
     }
 
 
@@ -150,12 +158,13 @@ public class NewsActivity extends AppCompatActivity {
 
     //LISTA AS VIDEOS POR PARAMETRO
     private void pesquisarVideos(String texto) {
-        List<Video> videosBusca = new ArrayList<>();
+        List<Item> videosBusca = new ArrayList<>();
 
         //busca na lista de musicas e salva em uma outra lista
-        for (Video video : videos) {
+        for (Item video : videos) {
 
-            String titulo = video.getTitulo().toLowerCase();
+//            String titulo = video.getTitulo().toLowerCase();
+            String titulo = video.snippet.title.toLowerCase();
 
             if (titulo.contains(texto)) {
                 videosBusca.add(video);

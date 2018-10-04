@@ -11,15 +11,16 @@ import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.modelos.Video;
+import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
 
 import java.util.List;
 
 public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHolder> {
 
-    private List<Video> videos;
+    private List<Item> videos;
     private Context context;
 
-    public AdaptadorVideo(List<Video> videos, Context context) {
+    public AdaptadorVideo(List<Item> videos, Context context) {
         this.videos = videos;
         this.context = context;
     }
@@ -36,8 +37,9 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
-        Video video = videos.get( position );
-        holder.titulo.setText( video.getTitulo() );
+        Item video = videos.get( position );
+        holder.titulo.setText( video.snippet.title );
+//        holder.titulo.setText( v);
 
     }
 
@@ -49,8 +51,6 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         TextView titulo;
-        TextView descricao;
-        TextView data;
         ImageView capa;
 
         public MyViewHolder(View itemView) {
