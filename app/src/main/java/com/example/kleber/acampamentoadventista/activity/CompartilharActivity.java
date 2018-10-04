@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.CardView;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.helper.Permissao;
@@ -152,7 +153,9 @@ public class CompartilharActivity extends AppCompatActivity {
         //verifica as permissoes que foram consedidas pelo usuario
         for (int permissaoResultado : grantResults) {
             if (permissaoResultado == PackageManager.PERMISSION_DENIED) {
-                alertaValidacaoPermissao();
+//                alertaValidacaoPermissao();
+                Toast.makeText(this, "ação indisponível", Toast.LENGTH_SHORT).show();
+                finish();
             }
         }
     }
