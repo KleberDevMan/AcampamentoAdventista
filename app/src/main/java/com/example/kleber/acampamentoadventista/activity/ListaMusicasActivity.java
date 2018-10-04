@@ -122,17 +122,7 @@ public class ListaMusicasActivity extends AppCompatActivity {
         });
     }
 
-    //OUVIR O BTN VOLTAR
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // se for a seta voltar
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
+
 
     //RECARREGA A LISTA COM TODAS AS MUSICAS
     private void recarregarMusicas() {
@@ -195,4 +185,16 @@ public class ListaMusicasActivity extends AppCompatActivity {
 
         return true;
     }
+
+    //OUVIR O BTN VOLTAR
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // se for a seta voltar
+//        switch (item.getItemId()) {
+//            case android.R.id.home:
+//                finish();
+//                break;
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 }

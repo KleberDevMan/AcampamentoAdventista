@@ -21,4 +21,5 @@
     <string name="titulo_contatos">Contatos</string>
     <string name="titulo_item_men_pesquisar">Pesquisar</string>
     <string name="publicar">Publicar</string>
+    <string name="filtro">Filtro</string>
 </resources>
