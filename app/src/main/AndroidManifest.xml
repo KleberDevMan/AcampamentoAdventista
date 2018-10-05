@@ -66,6 +66,8 @@
             android:parentActivityName=".activity.CompartilharActivity"
             android:theme="@style/AppTheme2"
             tools:targetApi="jelly_bean" />
+        <activity
+            android:name=".activity.PlayerActivity"/>
     </application>
 
 </manifest>

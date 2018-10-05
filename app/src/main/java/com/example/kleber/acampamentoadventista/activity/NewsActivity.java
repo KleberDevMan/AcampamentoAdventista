@@ -1,5 +1,6 @@
 package com.example.kleber.acampamentoadventista.activity;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -9,12 +10,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorVideo;
 import com.example.kleber.acampamentoadventista.api.YouTubeSevice;
 import com.example.kleber.acampamentoadventista.helper.RetrofitConfig;
 import com.example.kleber.acampamentoadventista.helper.YouTubeConfig;
+import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Resultado;
 import com.example.kleber.acampamentoadventista.modelos.Video;
@@ -103,19 +107,6 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     private void recuperarVideos() {
-
-//        Video video1 = new Video();
-//        video1.setTitulo("Video 1 muito interessante");
-//        videos.add(video1);
-//
-//        Video video2 = new Video();
-//        video2.setTitulo("Video 2 muito interessante");
-//        videos.add(video2);
-//
-//        Video video3 = new Video();
-//        video3.setTitulo("Video 3 muito interessante");
-//        videos.add(video3);
-
         YouTubeSevice youTubeSevice = retrofit.create(YouTubeSevice.class);
 
         youTubeSevice.recuperarVideos(
@@ -140,11 +131,43 @@ public class NewsActivity extends AppCompatActivity {
     }
 
     public void configurarRecyclerView(){
-
         adaptadorVideo = new AdaptadorVideo(videos, this);
         recyclerVideos.setHasFixedSize(true);
         recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
         recyclerVideos.setAdapter(adaptadorVideo);
+
+        //Configura evento de clique
+        recyclerVideos.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerVideos,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Item video = videos.get(position);
+                                String idVideo = video.id.videoId;
+                                String titulo = video.snippet.title;
+                                String descricao = video.snippet.description;
+
+                                Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
+                                i.putExtra("idVideo", idVideo);
+                                i.putExtra("title", video.snippet.title);
+                                i.putExtra("descricao", video.snippet.description);
+                                startActivity(i);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                            }
+                        }
+                )
+        );
     }
 
 

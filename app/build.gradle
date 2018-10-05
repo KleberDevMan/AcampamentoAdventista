@@ -41,5 +41,7 @@ dependencies {
     //Retrofit
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
+    //Picasso (faz o carregamento das imagens dos videos)
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
 }

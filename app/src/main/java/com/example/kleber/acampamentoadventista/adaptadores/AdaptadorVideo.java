@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.modelos.Video;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -39,7 +40,9 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
 
         Item video = videos.get( position );
         holder.titulo.setText( video.snippet.title );
-//        holder.titulo.setText( v);
+
+        String url = video.snippet.thumbnails.medium.url;
+        Picasso.get().load(url).into(holder.capa);
 
     }
 

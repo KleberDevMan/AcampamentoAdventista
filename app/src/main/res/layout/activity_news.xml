@@ -25,6 +25,7 @@
         android:textStyle="bold"
         app:fontFamily="@font/aldrich" />
 
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerVideos"
         android:layout_width="match_parent"
