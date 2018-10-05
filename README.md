@@ -1,5 +1,8 @@
 # AcampamentoAdventista
 
+Aluno: KLEBER JUNIO CABRAL CHAVES
+SISTEMAS DE INFORMAÇÃO - CATÓLICA DO TOCANTINS
+
 A ideia aqui é disponibilizar o roteiro, músicas e algumas outras 
 informações sobre o acampamento adventista que ocorre todo ano na cidade de Palmas, 
 no mês de fevereiro, período carnavalesco.
