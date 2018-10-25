@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.kleber.acampamentoadventista.R;
+import com.example.kleber.acampamentoadventista.modelos.Roteiro;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,5 +27,6 @@ public class RoteiroSabadoFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_roteiro_fragmento_sabado, container, false);
     }
+
 
 }
