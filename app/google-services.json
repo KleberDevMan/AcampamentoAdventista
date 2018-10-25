@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "421418420928",
+    "firebase_url": "https://acampamento-adventista-39460.firebaseio.com",
+    "project_id": "acampamento-adventista-39460",
+    "storage_bucket": "acampamento-adventista-39460.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:421418420928:android:c8d99bd8463c7157",
+        "android_client_info": {
+          "package_name": "com.example.kleber.acampamentoadventista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "421418420928-g1g0pm3aaq73m3ampms6gph81bkb5mp2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kleber.acampamentoadventista",
+            "certificate_hash": "dd4eb6ca957203396d933a8630938d59396d7343"
+          }
+        },
+        {
+          "client_id": "421418420928-1acpt3lerm88a2hbibt8bmhqtp1fot6l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAgliUa1ctnyCS063DwTcpUCssn4fggoWM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "421418420928-1acpt3lerm88a2hbibt8bmhqtp1fot6l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

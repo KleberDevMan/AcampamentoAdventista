@@ -43,5 +43,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     //Picasso (faz o carregamento das imagens dos videos)
     implementation 'com.squareup.picasso:picasso:2.71828'
+    //Dependecia do firebase
+//    implementation 'com.google.firebase:firebase-core:16.0.1'
 
 }
+//apply plugin: 'com.google.gms.google-services'
