@@ -1,6 +1,8 @@
 package com.example.kleber.acampamentoadventista.activity;
 
 import android.content.res.Resources;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
@@ -57,9 +59,39 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        //Busco roteiros
+        //FIREBASE
         final DatabaseReference roteirosDb = referencia.child( "roteiros" );
         roteirosDb.addValueEventListener(this);
+
+        //SQLite
+        try {
+            //CRIA BANCO
+            SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
+                    , MODE_PRIVATE, null);
+
+            //CRIA TABELA
+            bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros ( titulo VARCHAR, conteudo VARCHAR )");
+
+            //INSERIR DADOS
+            bancoDeDados.execSQL("INSERT INTO roteiros(titulo, conteudo) VALUES('Sexta', 'Conteudo vindo do SQLite - Sexta') ");
+            bancoDeDados.execSQL("INSERT INTO roteiros(titulo, conteudo) VALUES('Sabado', 'Conteudo vindo do SQLite - Sabado') ");
+
+            //RECUPERAR
+            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, conteudo FROM roteiros", null);
+
+            //INDICES DA TABELA
+            int indiceTitulo = cursor.getColumnIndex("titulo");
+            int indiceConteudo = cursor.getColumnIndex("conteudo");
+
+            cursor.moveToFirst();
+            while (cursor != null) {
+                Log.i("RESULTADO - nome: ", cursor.getString(indiceTitulo));
+                Log.i("RESULTADO - conteudo: ", cursor.getString(indiceConteudo));
+                cursor.moveToNext();
+            }
+        }catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public Roteiro getRoteiro(DataSnapshot snapshot) {
