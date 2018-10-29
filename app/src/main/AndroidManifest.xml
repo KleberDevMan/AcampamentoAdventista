@@ -27,7 +27,6 @@
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -67,7 +66,7 @@
             android:theme="@style/AppTheme2"
             tools:targetApi="jelly_bean" />
         <activity android:name=".activity.PlayerActivity" />
-        <activity android:name=".activity.LetraActivity"></activity>
+        <activity android:name=".activity.LetraActivity" />
     </application>
 
 </manifest>

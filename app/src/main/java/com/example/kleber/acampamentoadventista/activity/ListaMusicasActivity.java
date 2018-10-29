@@ -2,6 +2,7 @@ package com.example.kleber.acampamentoadventista.activity;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,10 +19,19 @@ import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorMusicas;
 import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
 import com.example.kleber.acampamentoadventista.modelos.Musica;
+import com.example.kleber.acampamentoadventista.modelos.vagalume.Example;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import com.google.gson.Gson;
 
 public class ListaMusicasActivity extends AppCompatActivity {
 
@@ -30,6 +40,8 @@ public class ListaMusicasActivity extends AppCompatActivity {
     private List<Musica> musicas;
     private AdaptadorMusicas adaptadorMusicas;
     private MaterialSearchView searchView;
+
+    private String chaveApiVagalume = "c882899b279d9a9627e078f427933b9b";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +75,9 @@ public class ListaMusicasActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Musica m = musicas.get(position);
-                                Toast.makeText(getApplicationContext(),
-                                        "musica " + m.getNome() + " precionada",
-                                        Toast.LENGTH_SHORT)
-                                        .show();
+                                BuscaMuscia buscaMusica = new BuscaMuscia();
+                                String urlApi = "https://api.vagalume.com.br/search.php?art="+ m.getCantor()+ "&mus="+ m.getNome() +"&apikey="+ chaveApiVagalume;
+                                buscaMusica.execute(urlApi);
                             }
 
                             @Override
@@ -122,8 +133,6 @@ public class ListaMusicasActivity extends AppCompatActivity {
         });
     }
 
-
-
     //RECARREGA A LISTA COM TODAS AS MUSICAS
     private void recarregarMusicas() {
         adaptadorMusicas = new AdaptadorMusicas(this, musicas);
@@ -154,7 +163,7 @@ public class ListaMusicasActivity extends AppCompatActivity {
 
     //RECUPERA AS MUSICAS VINDAS DO BANCO
     private void recuperaMusicas() {
-        musicas.add(new Musica("Falar com Deus", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
+        musicas.add(new Musica("Mansão Sobre O Monte", "letra", "Hinário Adventista", carregaImagem(R.drawable.salvacaoeservico1)));
         musicas.add(new Musica("Santo dia do Senhor", "letra", "ministério jovem", carregaImagem(R.drawable.download)));
         musicas.add(new Musica("Dez mil razões", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
         musicas.add(new Musica("Falar com Deus", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
@@ -186,15 +195,58 @@ public class ListaMusicasActivity extends AppCompatActivity {
         return true;
     }
 
-    //OUVIR O BTN VOLTAR
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // se for a seta voltar
-//        switch (item.getItemId()) {
-//            case android.R.id.home:
-//                finish();
-//                break;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
+    class BuscaMuscia extends AsyncTask<String, Void, Example>{
+
+        @Override
+        protected Example doInBackground(String... strings) {
+
+            String stringUrl = strings[0];
+            InputStream inputStream = null;
+            InputStreamReader inputStreamReader = null;
+            StringBuffer buffer = null;
+
+            try {
+
+                URL url = new URL(stringUrl);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader( inputStream );
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader( inputStreamReader );
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while((linha = reader.readLine()) != null){
+                    buffer.append( linha );
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Gson gson = new Gson();
+
+            //Converte String JSON para objeto Java
+            Example musica = gson.fromJson(buffer.toString(), Example.class);
+
+            return musica;
+        }
+
+        @Override
+        protected void onPostExecute(Example musica) {
+            super.onPostExecute(musica);
+
+            Toast.makeText(getApplicationContext(),musica.getMus().get(0).getText(),
+                                        Toast.LENGTH_SHORT)
+                                        .show();
+
+        }
+    }
 }
