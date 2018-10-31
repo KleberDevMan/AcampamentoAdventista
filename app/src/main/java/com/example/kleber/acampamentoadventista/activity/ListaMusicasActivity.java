@@ -23,6 +23,7 @@ import com.example.kleber.acampamentoadventista.modelos.vagalume.Example;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -41,7 +42,7 @@ public class ListaMusicasActivity extends AppCompatActivity {
     private AdaptadorMusicas adaptadorMusicas;
     private MaterialSearchView searchView;
 
-    private String chaveApiVagalume = "c882899b279d9a9627e078f427933b9b";
+//    private String chaveApiVagalume = "c882899b279d9a9627e078f427933b9b";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,9 @@ public class ListaMusicasActivity extends AppCompatActivity {
                             @Override
                             public void onItemClick(View view, int position) {
                                 Musica m = musicas.get(position);
-                                BuscaMuscia buscaMusica = new BuscaMuscia();
-                                String urlApi = "https://api.vagalume.com.br/search.php?art="+ m.getCantor()+ "&mus="+ m.getNome() +"&apikey="+ chaveApiVagalume;
-                                buscaMusica.execute(urlApi);
+//                                BuscaMuscia buscaMusica = new BuscaMuscia();
+//                                String urlApi = "https://api.vagalume.com.br/search.php?art="+ m.getCantor()+ "&mus="+ m.getNome() +"&apikey="+ chaveApiVagalume;
+//                                buscaMusica.execute(urlApi);
                             }
 
                             @Override
@@ -163,6 +164,22 @@ public class ListaMusicasActivity extends AppCompatActivity {
 
     //RECUPERA AS MUSICAS VINDAS DO BANCO
     private void recuperaMusicas() {
+
+//        Gson gson = new Gson();
+//
+//        try {
+//
+//            BufferedReader br = new BufferedReader(new FileReader(""));
+//
+//            //Converte String JSON para objeto Java
+//            Musica obj = gson.fromJson(br, Musica.class);
+//
+//            System.out.println(obj);
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
         musicas.add(new Musica("Mansão Sobre O Monte", "letra", "Hinário Adventista", carregaImagem(R.drawable.salvacaoeservico1)));
         musicas.add(new Musica("Santo dia do Senhor", "letra", "ministério jovem", carregaImagem(R.drawable.download)));
         musicas.add(new Musica("Dez mil razões", "letra", "ministério jovem", carregaImagem(R.drawable.salvacaoeservico1)));
@@ -195,58 +212,58 @@ public class ListaMusicasActivity extends AppCompatActivity {
         return true;
     }
 
-    class BuscaMuscia extends AsyncTask<String, Void, Example>{
-
-        @Override
-        protected Example doInBackground(String... strings) {
-
-            String stringUrl = strings[0];
-            InputStream inputStream = null;
-            InputStreamReader inputStreamReader = null;
-            StringBuffer buffer = null;
-
-            try {
-
-                URL url = new URL(stringUrl);
-                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-
-                // Recupera os dados em Bytes
-                inputStream = conexao.getInputStream();
-
-                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
-                inputStreamReader = new InputStreamReader( inputStream );
-
-                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
-                BufferedReader reader = new BufferedReader( inputStreamReader );
-                buffer = new StringBuffer();
-                String linha = "";
-
-                while((linha = reader.readLine()) != null){
-                    buffer.append( linha );
-                }
-
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            Gson gson = new Gson();
-
-            //Converte String JSON para objeto Java
-            Example musica = gson.fromJson(buffer.toString(), Example.class);
-
-            return musica;
-        }
-
-        @Override
-        protected void onPostExecute(Example musica) {
-            super.onPostExecute(musica);
-
-            Toast.makeText(getApplicationContext(),musica.getMus().get(0).getText(),
-                                        Toast.LENGTH_SHORT)
-                                        .show();
-
-        }
-    }
+//    class BuscaMuscia extends AsyncTask<String, Void, Example>{
+//
+//        @Override
+//        protected Example doInBackground(String... strings) {
+//
+//            String stringUrl = strings[0];
+//            InputStream inputStream = null;
+//            InputStreamReader inputStreamReader = null;
+//            StringBuffer buffer = null;
+//
+//            try {
+//
+//                URL url = new URL(stringUrl);
+//                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+//
+//                // Recupera os dados em Bytes
+//                inputStream = conexao.getInputStream();
+//
+//                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+//                inputStreamReader = new InputStreamReader( inputStream );
+//
+//                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+//                BufferedReader reader = new BufferedReader( inputStreamReader );
+//                buffer = new StringBuffer();
+//                String linha = "";
+//
+//                while((linha = reader.readLine()) != null){
+//                    buffer.append( linha );
+//                }
+//
+//            } catch (MalformedURLException e) {
+//                e.printStackTrace();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            Gson gson = new Gson();
+//
+//            //Converte String JSON para objeto Java
+//            Example musica = gson.fromJson(buffer.toString(), Example.class);
+//
+//            return musica;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(Example musica) {
+//            super.onPostExecute(musica);
+//
+//            Toast.makeText(getApplicationContext(),musica.getMus().get(0).getText(),
+//                                        Toast.LENGTH_SHORT)
+//                                        .show();
+//
+//        }
+//    }
 }

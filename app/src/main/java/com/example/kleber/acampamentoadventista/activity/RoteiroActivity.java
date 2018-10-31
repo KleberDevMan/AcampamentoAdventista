@@ -11,10 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorDePaginas;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroDomingoFragment;
+import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroFragment;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSabadoFragment;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSegundaFragment;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSextaFragment;
@@ -29,7 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoteiroActivity extends AppCompatActivity implements ValueEventListener{
+public class RoteiroActivity extends AppCompatActivity implements ValueEventListener {
 
     //Usados para navegacao
     private TabLayout tabLayout;
@@ -41,7 +43,7 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
     //Lista de roteiros
     private List<Roteiro> roteiros = new ArrayList<>();
     //Lista de fregments
-    private List<Fragment> fragmentos = new ArrayList<>();
+    private List<RoteiroFragment> roteiroFragments = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +62,7 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
         }
 
         //FIREBASE
-        final DatabaseReference roteirosDb = referencia.child( "roteiros" );
+        final DatabaseReference roteirosDb = referencia.child("roteiros");
         roteirosDb.addValueEventListener(this);
 
         //SQLite
@@ -71,6 +73,8 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
 
             //CRIA TABELA
             bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros ( titulo VARCHAR, conteudo VARCHAR )");
+
+            bancoDeDados.execSQL("DELETE FROM roteiros;");
 
             //INSERIR DADOS
             bancoDeDados.execSQL("INSERT INTO roteiros(titulo, conteudo) VALUES('Sexta', 'Conteudo vindo do SQLite - Sexta') ");
@@ -83,15 +87,62 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
             int indiceTitulo = cursor.getColumnIndex("titulo");
             int indiceConteudo = cursor.getColumnIndex("conteudo");
 
+            int i = 0;
             cursor.moveToFirst();
             while (cursor != null) {
-                Log.i("RESULTADO - nome: ", cursor.getString(indiceTitulo));
-                Log.i("RESULTADO - conteudo: ", cursor.getString(indiceConteudo));
+//                Log.i("RESULTADO - nome: ", cursor.getString(indiceTitulo));
+//                Log.i("RESULTADO - conteudo: ", cursor.getString(indiceConteudo));
+                roteiros.add(new Roteiro(cursor.getString(indiceTitulo), cursor.getString(indiceConteudo)));
+                Log.i("RESULTADO - ", roteiros.get(i).toString());
                 cursor.moveToNext();
+                i++;
             }
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
+
+        //SETA O ROTEIRO NA TELA -----------------------
+
+        // CRIO UM DICIONARIO
+        Bundle dicionario = new Bundle();
+
+        // CRIA FRAGEMENTO
+//        Roteiro r = new Roteiro("", "");
+//        for (int i = 0; i < roteiros.size(); i++) {
+//            roteiroFragments.add(criaFragemntoRoteiro(roteiros.get(i), dicionario));
+//        }
+
+        // CRIO O ADAPTER
+        AdaptadorDePaginas adapter = new AdaptadorDePaginas(getSupportFragmentManager());
+
+        // SETO OS FRAGMENTOS NO ADPTER
+        adapter.AddFragment(criaFragemntoRoteiro(roteiros.get(0), dicionario), getString(R.string.sexta));
+        adapter.AddFragment(criaFragemntoRoteiro(roteiros.get(1), dicionario), getString(R.string.sabado));
+        adapter.AddFragment(new RoteiroDomingoFragment(), getString(R.string.domingo));
+        adapter.AddFragment(new RoteiroSegundaFragment(), getString(R.string.segunda));
+        adapter.AddFragment(new RoteiroTercaFragment(), getString(R.string.terca));
+
+        for (int i = 0; i < roteiroFragments.size(); i++) {
+            adapter.AddFragment(roteiroFragments.get(i), getString(R.string.sexta));
+        }
+
+        // SETO O ADAPTER NA VIEW PAGE
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+        // FIM -----------------------------------------
+    }
+
+    //Recebe um Model Roteiro e devolve um Frament Roteiro
+    RoteiroFragment criaFragemntoRoteiro(Roteiro roteiro, Bundle dicionario) {
+        RoteiroFragment roteiroFragment = new RoteiroFragment();
+        if (dicionario.getSerializable("roteiro")!=null){
+            dicionario.remove("roteiro");
+        }
+        dicionario.putSerializable("roteiro", roteiro);
+        roteiroFragment.setArguments(dicionario);
+        return roteiroFragment;
     }
 
     public Roteiro getRoteiro(DataSnapshot snapshot) {
@@ -113,8 +164,8 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
     @Override
     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
         // obetenho roteiro
-        roteiros.add(new Roteiro((String)dataSnapshot.child("sexta").child("titulo").getValue(),
-                (String)dataSnapshot.child("sexta").child("conteudo").getValue()));
+        roteiros.add(new Roteiro((String) dataSnapshot.child("sexta").child("titulo").getValue(),
+                (String) dataSnapshot.child("sexta").child("conteudo").getValue()));
 
         // dicionario
         Bundle dicionario = new Bundle();
@@ -140,6 +191,6 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
 
     @Override
     public void onCancelled(@NonNull DatabaseError databaseError) {
-
+        Toast.makeText(this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

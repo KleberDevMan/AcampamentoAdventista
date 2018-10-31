@@ -8,16 +8,32 @@
     android:orientation="vertical"
     tools:context=".activity.LetraActivity">
 
+    <TextView
+        android:id="@+id/nome_musica"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:text="Titulo"
+        android:textSize="20dp"
+        android:textStyle="bold"
+        android:fontFamily="@font/aldrich"/>
+
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">
 
         <TextView
-            android:id="@+id/status"
+            android:textSize="14dp"
+            android:textStyle="bold"
+            android:fontFamily="@font/aldrich"
+            android:id="@+id/letra_musica"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:text="carregando" />
+            android:layout_marginTop="20dp"
+            android:text="letra" />
+
     </ScrollView>
 
 </LinearLayout>

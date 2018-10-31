@@ -33,7 +33,7 @@ public class Roteiro implements Serializable {
 
     @Override
     public String toString() {
-        return "Roteiro{" +
+        return "RoteiroFragment{" +
                 "titulo='" + titulo + '\'' +
                 ", conteudo='" + conteudo + '\'' +
                 '}';

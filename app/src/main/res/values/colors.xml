@@ -5,7 +5,7 @@
     <color name="colorDark2">#083542</color>
     <color name="colorAccent">#f3322d</color>
     <color name="bg">#00405e</color>
-    <color name="bg2">#ffffff</color>
+    <color name="bg2">#00405e</color>
     <color name="celulaMusica">#204e64</color>
 
 </resources>
