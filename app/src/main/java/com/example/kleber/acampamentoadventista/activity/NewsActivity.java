@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,7 +20,6 @@ import com.example.kleber.acampamentoadventista.helper.YouTubeConfig;
 import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Resultado;
-import com.example.kleber.acampamentoadventista.modelos.Video;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -32,11 +30,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 
-public class NewsActivity extends AppCompatActivity {
+public class NewsActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener,
+        MaterialSearchView.SearchViewListener{
 
     private RecyclerView recyclerVideos;
 
-//    private List<Video> videos;
     private AdaptadorVideo adaptadorVideo;
     private MaterialSearchView searchView;
 
@@ -52,58 +50,32 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-        //inicializa componentes
-        recyclerVideos = findViewById(R.id.recyclerVideos);
-        videos = new ArrayList<>();
-        searchView = findViewById(R.id.materialSearchView);
+        inicializaComponentes();
+        configuraToolbar();
 
-        //Configuracoes inicais
+        //Configura retrofit
         retrofit = RetrofitConfig.getRetrofit();
-
-        //configurar toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("");
-        setSupportActionBar(toolbar);
 
         //Recupera Videos
         recuperarVideos();
 
-        //ouve eventos do onSearchView
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            //chamado quando o user confirma o que digitou
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                if (query != null && !query.isEmpty()) {
-                    //converte o testo em letras minusculas
-                    pesquisarVideos(query.toLowerCase());
-                }
-                return true;
-            }
+        //DEFINE LISTENER SEARCHVIEW
+        searchView.setOnQueryTextListener(this);
+        searchView.setOnSearchViewListener(this);
+    }
 
-            //chamado em tempo de execucao
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                if (newText != null && !newText.isEmpty()) {
-                    //converte o testo em letras minusculas
-                    pesquisarVideos(newText.toLowerCase());
-                }
-                return true;
-            }
-        });
-        //ouve comportamento da SeachView
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            //assim que o SeachView é EXIBIDO
-            @Override
-            public void onSearchViewShown() {
 
-            }
 
-            //assim que o SeachView é FECHADO
-            @Override
-            public void onSearchViewClosed() {
-                recarregarVideos();
-            }
-        });
+    private void configuraToolbar() {
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
+    }
+
+    private void inicializaComponentes() {
+        recyclerVideos = findViewById(R.id.recyclerVideos);
+        videos = new ArrayList<>();
+        searchView = findViewById(R.id.materialSearchView);
     }
 
     private void recuperarVideos() {
@@ -151,8 +123,8 @@ public class NewsActivity extends AppCompatActivity {
 
                                 Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
                                 i.putExtra("idVideo", idVideo);
-                                i.putExtra("title", video.snippet.title);
-                                i.putExtra("descricao", video.snippet.description);
+                                i.putExtra("title", titulo);
+                                i.putExtra("descricao", descricao);
                                 startActivity(i);
                             }
 
@@ -225,5 +197,39 @@ public class NewsActivity extends AppCompatActivity {
             finish(); // fecha esta atividade e retorna à atividade de anterior (se houver)
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    // ----------- EVENTOS OnQueryTextListener (quando digita um texto na busca) ------------
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        if (query != null && !query.isEmpty()) {
+            //converte o testo em letras minusculas
+            pesquisarVideos(query.toLowerCase());
+        }
+        return true;
+    }
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        if (newText != null && !newText.isEmpty()) {
+            //converte o testo em letras minusculas
+            pesquisarVideos(newText.toLowerCase());
+        }
+        return true;
+    }
+
+
+
+
+
+
+
+    // ----------- EVENTOS SearchViewListener (quando clica em um dos botoes da busca) ------------
+    @Override
+    public void onSearchViewShown() {
+
+    }
+    @Override
+    public void onSearchViewClosed() {
+        recarregarVideos();
     }
 }

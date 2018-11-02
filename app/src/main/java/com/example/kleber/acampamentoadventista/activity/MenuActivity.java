@@ -20,20 +20,12 @@ public class MenuActivity extends AppCompatActivity {
         Intent intencao = new Intent(this, ListaMusicasActivity.class);
         this.startActivity(intencao);
     }
-    public void btnCompartilhar(View botao) {
-        Intent intencao = new Intent(this, CompartilharActivity.class);
-        this.startActivity(intencao);
-    }
     public void btnRoteiro(View botao) {
         Intent intencao = new Intent(this, RoteiroActivity.class);
         this.startActivity(intencao);
     }
     public void btnNews(View botao) {
         Intent intencao = new Intent(this, NewsActivity.class);
-        this.startActivity(intencao);
-    }
-    public void btnContatos(View botao) {
-        Intent intencao = new Intent(this, ContatosActivity.class);
         this.startActivity(intencao);
     }
     public void btnMeditacao(View botao) {

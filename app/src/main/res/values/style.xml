@@ -1,12 +1,12 @@
 <resources>
 
     <!-- theme -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:colorBackground">@color/colorDark2</item>
     </style>
 
     <!-- theme sem ActionBar -->
@@ -14,8 +14,9 @@
         <item name="colorPrimary">@color/colorPrimaryDark</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:colorBackground">@color/bg</item>
+        <item name="android:colorBackground">@color/colorDark2</item>
     </style>
+
 
     <!-- stilo para o TabLayout -->
     <style name="tabs" parent="Widget.Design.TabLayout">
@@ -23,6 +24,7 @@
         <item name="tabPaddingStart">30dp</item>
         <item name="tabPaddingEnd">30dp</item>
     </style>
+
 
     <!-- stilo para o ActionBar SeachButton -->
     <style name="actionBarComSeach" parent="Theme.AppCompat.NoActionBar">

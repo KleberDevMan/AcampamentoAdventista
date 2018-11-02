@@ -32,14 +32,15 @@ public class RoteiroFragment extends Fragment {
 
         // chamar isso aqui só uma vez!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-        //Seta os valores
         Bundle dicionario = getArguments();
-        com.example.kleber.acampamentoadventista.modelos.Roteiro r = (com.example.kleber.acampamentoadventista.modelos.Roteiro) dicionario.getSerializable("roteiro");
-        titulo.setText(r.getTitulo());
-        conteudo.setText(r.getConteudo());
+
+        //Seta os valores
+        if (dicionario.getSerializable("roteiro") != null){
+            setaDicionario(dicionario, titulo, conteudo);
+        }
 
         //----------------------------------------------------------------------
-        
+
         return view;
 
     }
@@ -51,8 +52,14 @@ public class RoteiroFragment extends Fragment {
 //        conteudo.setText(roteiro.getConteudo());
     }
 
-    public void test() {
 
+    public void setaDicionario(Bundle dicionario, TextView titulo, TextView conteudo) {
+
+        com.example.kleber.acampamentoadventista.modelos.Roteiro r =
+                (com.example.kleber.acampamentoadventista.modelos.Roteiro)
+                        dicionario.getSerializable("roteiro");
+        titulo.setText(r.getTitulo());
+        conteudo.setText(r.getConteudo());
     }
 
 }

@@ -5,11 +5,11 @@ import android.os.Bundle;
 
 import com.example.kleber.acampamentoadventista.R;
 
-public class LetraActivity extends AppCompatActivity {
+public class MusicaActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_letra);
+        setContentView(R.layout.activity_musica);
     }
 }

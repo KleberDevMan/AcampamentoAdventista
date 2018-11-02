@@ -23,38 +23,33 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity
-            android:name=".activity.MenuActivity"
-            android:theme="@style/AppTheme">
+            android:name=".activity.MenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.ListaMusicasActivity"
-            android:parentActivityName=".activity.MenuActivity"
             android:theme="@style/AppTheme2"
+            android:parentActivityName=".activity.MenuActivity"
             tools:targetApi="jelly_bean" />
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
         <activity
-            android:name=".activity.RoteiroActivity"
-            android:theme="@style/AppTheme" />
+            android:name=".activity.RoteiroActivity" />
         <activity
-            android:name=".activity.NewsActivity"
-            android:theme="@style/AppTheme2" />
+            android:theme="@style/AppTheme2"
+            android:name=".activity.NewsActivity"/>
         <activity
             android:name=".activity.MeditacaoActivity"
             android:parentActivityName=".activity.MenuActivity"
-            android:theme="@style/AppTheme"
             tools:targetApi="jelly_bean" />
         <activity
             android:name=".activity.ContatosActivity"
             android:parentActivityName=".activity.MenuActivity"
-            android:theme="@style/AppTheme"
             tools:targetApi="jelly_bean" />
         <activity
             android:name=".activity.CompartilharActivity"
@@ -63,10 +58,12 @@
         <activity
             android:name=".activity.MolduraActivity"
             android:parentActivityName=".activity.CompartilharActivity"
-            android:theme="@style/AppTheme2"
             tools:targetApi="jelly_bean" />
         <activity android:name=".activity.PlayerActivity" />
-        <activity android:name=".activity.LetraActivity" />
+        <activity android:name=".activity.MusicaActivity"
+            android:parentActivityName=".activity.ListaMusicasActivity"
+            android:theme="@style/AppTheme"
+            tools:targetApi="jelly_bean"/>
     </application>
 
 </manifest>

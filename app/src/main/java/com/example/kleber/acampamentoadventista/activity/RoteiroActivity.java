@@ -131,15 +131,16 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        dicionario.remove("roteiro");
         // FIM -----------------------------------------
     }
 
     //Recebe um Model Roteiro e devolve um Frament Roteiro
     RoteiroFragment criaFragemntoRoteiro(Roteiro roteiro, Bundle dicionario) {
         RoteiroFragment roteiroFragment = new RoteiroFragment();
-        if (dicionario.getSerializable("roteiro")!=null){
-            dicionario.remove("roteiro");
-        }
+//        if (dicionario.getSerializable("roteiro")!=null){
+//            dicionario.remove("roteiro");
+//        }
         dicionario.putSerializable("roteiro", roteiro);
         roteiroFragment.setArguments(dicionario);
         return roteiroFragment;
