@@ -47,9 +47,6 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
     //DICIONARIO
     private Bundle dicionario;
 
-    //LISTA DE FRAGMENTOS
-//    private List<RoteiroFragment> roteiroFragments = new ArrayList<>();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
