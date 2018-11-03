@@ -11,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorVideo;
@@ -19,7 +20,7 @@ import com.example.kleber.acampamentoadventista.helper.RetrofitConfig;
 import com.example.kleber.acampamentoadventista.helper.YouTubeConfig;
 import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
 import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
-import com.example.kleber.acampamentoadventista.modelos.youtube.Resultado;
+import com.example.kleber.acampamentoadventista.modelos.youtube.ResultYouTubeRequest;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -31,7 +32,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class NewsActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener,
-        MaterialSearchView.SearchViewListener{
+        MaterialSearchView.SearchViewListener,
+        RecyclerItemClickListener.OnItemClickListener {
 
     private RecyclerView recyclerVideos;
 
@@ -40,7 +42,6 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
 
     //Modelos da API youTube
     private List<Item> videos = new ArrayList<>();
-    private Resultado resultado;
 
     //Retrofit
     private Retrofit retrofit;
@@ -53,15 +54,18 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         inicializaComponentes();
         configuraToolbar();
 
-        //Configura retrofit
-        retrofit = RetrofitConfig.getRetrofit();
-
-        //Recupera Videos
-        recuperarVideos();
+        //DEFINE LISTENER RECYCLER
+        recyclerVideos.addOnItemTouchListener(new RecyclerItemClickListener(this, recyclerVideos, this));
 
         //DEFINE LISTENER SEARCHVIEW
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchViewListener(this);
+
+        //CONFIGURA RetroFit
+        retrofit = RetrofitConfig.getRetrofit();
+
+        //BUSCA VIDEOS NA INTERNET
+        recuperarVideos();
     }
 
 
@@ -78,70 +82,46 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         searchView = findViewById(R.id.materialSearchView);
     }
 
+    //BUSCA VIDEOS NA INTERNET
     private void recuperarVideos() {
         YouTubeSevice youTubeSevice = retrofit.create(YouTubeSevice.class);
 
+        String s = "abre";
+
+        //FAZ REQUISICAO HTTP
         youTubeSevice.recuperarVideos(
                 "snippet", "date",
-                "20", YouTubeConfig.CHAVE_YOUTUBE_API,
-                YouTubeConfig.CANAL_ID
-        ).enqueue(new Callback<Resultado>() {
+                "10", YouTubeConfig.CHAVE_YOUTUBE_API,
+                YouTubeConfig.PLAYLIST
+
+        ).enqueue(new Callback<ResultYouTubeRequest>() {
+
+            //LE A RESPOSTA E COLOCA NA RECYCLER
             @Override
-            public void onResponse(Call<Resultado> call, Response<Resultado> response) {
-                //Log.d("resultado", "resultado: " + response.toString());
-                Resultado resultado = response.body();
-                videos = resultado.items;
+            public void onResponse(Call<ResultYouTubeRequest> call, Response<ResultYouTubeRequest> response) {
+                ResultYouTubeRequest resultado = response.body();
+                videos = resultado.getItems();
                 configurarRecyclerView();
-//                Log.d("resultado", "resultado: " + resultado.items.get(0).id.videoId );
+
+                String s = "fecha";
             }
+
 
             @Override
-            public void onFailure(Call<Resultado> call, Throwable t) {
-
+            public void onFailure(Call<ResultYouTubeRequest> call, Throwable t) {
+                Toast.makeText(NewsActivity.this, "Não foi possivel acessar vídeos. Tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
             }
+
         });
     }
 
+    //SETA ARRAY LIST NA RECYCLER
     public void configurarRecyclerView(){
         adaptadorVideo = new AdaptadorVideo(videos, this);
         recyclerVideos.setHasFixedSize(true);
         recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
         recyclerVideos.setAdapter(adaptadorVideo);
-
-        //Configura evento de clique
-        recyclerVideos.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        this,
-                        recyclerVideos,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Item video = videos.get(position);
-                                String idVideo = video.id.videoId;
-                                String titulo = video.snippet.title;
-                                String descricao = video.snippet.description;
-
-                                Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
-                                i.putExtra("idVideo", idVideo);
-                                i.putExtra("title", titulo);
-                                i.putExtra("descricao", descricao);
-                                startActivity(i);
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                            }
-                        }
-                )
-        );
     }
-
 
     //RECARREGA A LISTA COM TODAS OS VIDEOS
     private void recarregarVideos() {
@@ -150,23 +130,21 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         adaptadorVideo.notifyDataSetChanged();
     }
 
-
-    //LISTA AS VIDEOS POR PARAMETRO
+    //LISTA OS VIDEOS POR PARAMETRO
     private void pesquisarVideos(String texto) {
         List<Item> videosBusca = new ArrayList<>();
 
-        //busca na lista de musicas e salva em uma outra lista
+        //BUSCA A LISTA NA LISTA DE VIDEOS E SALVA EM OUTRA LISTA
         for (Item video : videos) {
 
-//            String titulo = video.getTitulo().toLowerCase();
-            String titulo = video.snippet.title.toLowerCase();
+            String titulo = video.getSnippet().getTitle().toLowerCase();
 
             if (titulo.contains(texto)) {
                 videosBusca.add(video);
             }
         }
 
-        //exibe na recycler uma lista de musicas filtrada
+        //RECONFIRA RECYCLER
         adaptadorVideo = new AdaptadorVideo(videosBusca, this);
         recyclerVideos.setAdapter(adaptadorVideo);
         adaptadorVideo.notifyDataSetChanged();
@@ -190,14 +168,19 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         return true;
     }
 
+    //EVENTO VOLTAR
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // se for a seta voltar
+        // SE FOR BTN VOLTAR
         if (item.getItemId() == android.R.id.home) {
-            finish(); // fecha esta atividade e retorna à atividade de anterior (se houver)
+            finish();
         }
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
 
     // ----------- EVENTOS OnQueryTextListener (quando digita um texto na busca) ------------
     @Override
@@ -216,13 +199,6 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         }
         return true;
     }
-
-
-
-
-
-
-
     // ----------- EVENTOS SearchViewListener (quando clica em um dos botoes da busca) ------------
     @Override
     public void onSearchViewShown() {
@@ -231,5 +207,28 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     @Override
     public void onSearchViewClosed() {
         recarregarVideos();
+    }
+
+
+    // ----------- EVENTOS RecyclerView ------------
+    @Override
+    public void onItemClick(View view, int position) {
+        Item video = videos.get(position);
+
+        Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
+        i.putExtra("idVideo", video.getSnippet().getResourceId().getVideoId());
+        i.putExtra("title", video.getSnippet().getTitle());
+        i.putExtra("descricao", video.getSnippet().getDescription());
+        startActivity(i);
+    }
+
+    @Override
+    public void onLongItemClick(View view, int position) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
     }
 }
