@@ -39,7 +39,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/celula_nome"
+                android:id="@+id/celula_titulo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|center_horizontal"
@@ -51,7 +51,7 @@
                 app:fontFamily="@font/aldrich" />
 
             <TextView
-                android:id="@+id/celula_cantor"
+                android:id="@+id/celula_artista"
                 android:layout_width="305dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"

@@ -109,7 +109,7 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
 
             @Override
             public void onFailure(Call<ResultYouTubeRequest> call, Throwable t) {
-                Toast.makeText(NewsActivity.this, "Não foi possivel acessar vídeos. Tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(NewsActivity.this, "Sem internet. Tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
             }
 
         });

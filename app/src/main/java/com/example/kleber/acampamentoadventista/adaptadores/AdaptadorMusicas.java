@@ -6,13 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.modelos.Musica;
-
-import org.w3c.dom.Text;
+import com.example.kleber.acampamentoadventista.modelos.musica.Musica;
 
 import java.util.List;
 
@@ -29,16 +26,13 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
     //GUARDA OS DADOS DA MUSICA ANTES DE CRIALA
     public class Holder extends RecyclerView.ViewHolder {
 
-        TextView nome;
-        TextView letra;
-        TextView cantor;
-        ImageView album;
+        TextView titulo;
+        TextView artista;
 
         public Holder(View itemView) {
             super(itemView);
-            nome = itemView.findViewById(R.id.celula_nome);
-            cantor = itemView.findViewById(R.id.celula_cantor);
-            album = itemView.findViewById(R.id.celula_album);
+            titulo = itemView.findViewById(R.id.celula_titulo);
+            artista = itemView.findViewById(R.id.celula_artista);
         }
     }
 
@@ -59,9 +53,8 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         Musica musica = musicas.get(position);
-        holder.nome.setText(musica.getNome());
-        holder.cantor.setText(musica.getCantor());
-        holder.album.setImageBitmap(musica.getAlbum());
+        holder.titulo.setText(musica.getTitulo());
+        holder.artista.setText(musica.getArtista());
     }
     //RETORNO A QUANTIDADE DE ITENS QUE SERAO EXIBIDOR
     @Override
