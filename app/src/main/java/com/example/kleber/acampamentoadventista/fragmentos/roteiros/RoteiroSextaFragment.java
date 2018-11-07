@@ -23,10 +23,10 @@ public class RoteiroSextaFragment extends RoteiroFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_roteiro_fragmento_sexta, container, false);
+        View view = inflater.inflate(R.layout.fragment_roteiro_fragmento, container, false);
 
-        titulo = view.findViewById(R.id.titulo_sexta);
-        conteudo = view.findViewById(R.id.conteudo_sexta);
+        titulo = view.findViewById(R.id.titulo_roteiro);
+        conteudo = view.findViewById(R.id.conteudo_roteiro);
 
         dicionario = getArguments();
 

@@ -25,17 +25,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class RoteiroActivity extends AppCompatActivity implements ValueEventListener {
+public class RoteiroActivity extends AppCompatActivity {
 
     //NAVEGACAO
     private TabLayout tabLayout;
     private ViewPager viewPager;
-
-    //FIREBASE REFERENCE
-    private DatabaseReference referencia = FirebaseDatabase.getInstance().getReference();
-
-    //LISTA DE ROTEIROS
-//    private List<Roteiro> roteiros = new ArrayList<>();
 
     //ROTEIROS
     private RoteiroSextaFragment roteiroSextaFragment;
@@ -54,10 +48,6 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
 
         inicializaComponentes();
         configuraToolbar();
-
-        //FIREBASE
-        final DatabaseReference roteirosDb = referencia.child("roteiros");
-        roteirosDb.addValueEventListener(this);
 
         //SQLite
         try {
@@ -100,6 +90,21 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
 
     }
 
+    private void configuraToolbar() {
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
+    }
+    private void inicializaComponentes() {
+        tabLayout = findViewById(R.id.tablayout);
+        viewPager = findViewById(R.id.pager);
+        dicionario = new Bundle();
+    }
+
+
+    //INICIALIZO O FRAGMENTO ROTEIRO COM DADOS DO SQLITE
     private void inicializaRoteiroFragment(int posicao, Bundle dicionario, String titulo, String conteudo) {
 
         Roteiro r = null;
@@ -126,71 +131,7 @@ public class RoteiroActivity extends AppCompatActivity implements ValueEventList
                 break;
             case 5:
                 break;
-
         }
 
-    }
-
-    private void configuraToolbar() {
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setTitle("");
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setDisplayShowHomeEnabled(true);
-        }
-    }
-
-    private void inicializaComponentes() {
-        tabLayout = findViewById(R.id.tablayout);
-        viewPager = findViewById(R.id.pager);
-        dicionario = new Bundle();
-    }
-
-    public Roteiro getRoteiro(DataSnapshot snapshot) {
-        Roteiro roteiro = new Roteiro();
-        roteiro.setTitulo((String) snapshot.child("titulo").getValue());
-        roteiro.setConteudo((String) snapshot.child("conteudo").getValue());
-        return roteiro;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // se for a seta voltar
-        if (item.getItemId() == android.R.id.home) {
-            finish(); // fecha esta atividade e retorna à atividade de anterior (se houver)
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-        // obetenho roteiro
-//        roteiros.add(new Roteiro((String) dataSnapshot.child("sexta").child("titulo").getValue(),
-//                (String) dataSnapshot.child("sexta").child("conteudo").getValue()));
-//
-//        // dicionario
-//        Bundle dicionario = new Bundle();
-//
-//        // fragmento sexta
-//        RoteiroSextaFragment sextaFragment = new RoteiroSextaFragment();
-//        dicionario.putSerializable("roteiro", roteiros.get(0));
-//        sextaFragment.setArguments(dicionario);
-//
-//        // adiciona fragmentos
-//        AdaptadorDePaginas adapter = new AdaptadorDePaginas(getSupportFragmentManager());
-//        adapter.AddFragment(sextaFragment, getString(R.string.sexta));
-//        adapter.AddFragment(new RoteiroSabadoFragment(), getString(R.string.sabado));
-//        adapter.AddFragment(new RoteiroDomingoFragment(), getString(R.string.domingo));
-//        adapter.AddFragment(new RoteiroSegundaFragment(), getString(R.string.segunda));
-//        adapter.AddFragment(new RoteiroTercaFragment(), getString(R.string.terca));
-//
-//        // configura a ViewPagina e sincroniza com os Tabs
-//        viewPager.setAdapter(adapter);
-//        tabLayout.setupWithViewPager(viewPager);
-
-    }
-
-    @Override
-    public void onCancelled(@NonNull DatabaseError databaseError) {
-        Toast.makeText(this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
     }
 }

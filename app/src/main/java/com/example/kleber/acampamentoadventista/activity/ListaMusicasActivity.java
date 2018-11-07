@@ -1,5 +1,6 @@
 package com.example.kleber.acampamentoadventista.activity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -25,7 +26,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaMusicasActivity extends AppCompatActivity implements RecyclerItemClickListener.OnItemClickListener,
+public class ListaMusicasActivity extends AppCompatActivity
+        implements RecyclerItemClickListener.OnItemClickListener,
         MaterialSearchView.OnQueryTextListener,
         MaterialSearchView.SearchViewListener {
 
@@ -35,7 +37,8 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
     private AdaptadorMusicas adaptadorMusicas;
     private MaterialSearchView searchView;
 
-//    private String chaveApiVagalume = "c882899b279d9a9627e078f427933b9b";
+    //DICIONARIO
+    private Bundle dicionario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,12 +71,13 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("");
     }
-
     private void inicializaComponentes() {
         recyclerView = findViewById(R.id.lista_musicas);
         musicas = new ArrayList<>();
         searchView = findViewById(R.id.materialSearchView);
+        dicionario = new Bundle();
     }
+
 
     //RECARREGA A LISTA COM TODAS AS MUSICAS
     private void recarregarMusicas() {
@@ -149,10 +153,10 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
     }
 
     //CONVERTE IMAGENS SALVAS NOS RECURSOS EM BITMAP
-    private Bitmap carregaImagem(int id) {
-        return BitmapFactory
-                .decodeResource(getResources(), id);
-    }
+//    private Bitmap carregaImagem(int id) {
+//        return BitmapFactory
+//                .decodeResource(getResources(), id);
+//    }
 
     //INFLANDO ITENS DE MENU NA ACTION_BAR
     @Override
@@ -176,14 +180,34 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     // ----------- EVENTOS RecyclerView ------------
     @Override
     public void onItemClick(View view, int position) {
-        Musica m = musicas.get(position);
 //        BuscaMuscia buscaMusica = new BuscaMuscia(this);
 //        String urlApi = "https://api.vagalume.com.br/search.php?art=" + m.getArtista() + "&mus=" + m.getNome() + "&apikey=" + chaveApiVagalume;
 //        buscaMusica.execute(urlApi);
-        Toast.makeText(this, m.getTitulo(), Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, m.getTitulo(), Toast.LENGTH_SHORT).show();
+
+        Musica m = musicas.get(position);
+//
+        Intent intent = new Intent(this, MusicaActivity.class);
+
+        dicionario.putSerializable("musica", m);
+        intent.putExtras(dicionario);
+
+        startActivity(intent);
     }
     @Override
     public void onLongItemClick(View view, int position) {
@@ -192,6 +216,14 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+
+
+
+
+
+
+
+
 
 
 
@@ -207,6 +239,7 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
         }
         return true;
     }
+
     @Override
     public boolean onQueryTextChange(String newText) {
         if (newText != null && !newText.isEmpty()) {
@@ -215,11 +248,6 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
         }
         return true;
     }
-
-
-
-
-
 
 
     // ----------- EVENTOS SearchViewListener (quando clica em um dos botoes da busca) ------------
@@ -232,83 +260,4 @@ public class ListaMusicasActivity extends AppCompatActivity implements RecyclerI
         recarregarMusicas();
     }
 
-
-
-
-
-
-
-
-
-//    class BuscaMuscia extends AsyncTask<String, Void, Musica> {
-//
-//        ProgressDialog vrProgress = null;
-//        private ListaMusicasActivity listaMusicasActivity = null;
-//
-//        public BuscaMuscia(ListaMusicasActivity listaMusicasActivity) {
-//            this.listaMusicasActivity = listaMusicasActivity;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//            vrProgress = new ProgressDialog(listaMusicasActivity);
-//            vrProgress.setCancelable(false);
-//            vrProgress.setCanceledOnTouchOutside(false);
-//            vrProgress.setMessage("Carregando...");
-//            vrProgress.setTitle("Agurde!");
-//            vrProgress.show();
-//        }
-//
-//        @Override
-//        protected Musica doInBackground(String... strings) {
-//
-//            String stringUrl = strings[0];
-//            InputStream inputStream = null;
-//            InputStreamReader inputStreamReader = null;
-//            StringBuffer buffer = null;
-//
-//            try {
-//
-//                URL url = new URL(stringUrl);
-//                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-//
-//                // Recupera os dados em Bytes
-//                inputStream = conexao.getInputStream();
-//
-//                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
-//                inputStreamReader = new InputStreamReader(inputStream);
-//
-//                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
-//                BufferedReader reader = new BufferedReader(inputStreamReader);
-//                buffer = new StringBuffer();
-//                String linha = "";
-//
-//                while ((linha = reader.readLine()) != null) {
-//                    buffer.append(linha);
-//                }
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//
-//            Gson gson = new Gson();
-//
-//            //Converte String JSON para objeto Java
-//            Musica musica = gson.fromJson(buffer.toString(), Musica.class);
-//
-//            return musica;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(Musica musica) {
-//            super.onPostExecute(musica);
-//            vrProgress.dismiss();
-//
-//            Intent intencao = new Intent(listaMusicasActivity, MusicaActivity.class);
-//            listaMusicasActivity.startActivity(intencao);
-//        }
-//    }
 }

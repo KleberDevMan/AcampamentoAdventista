@@ -43,6 +43,9 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
     //MUSICAS
     private List<Musica> musicas = new ArrayList<>();
 
+    //WEB_SERVICE
+    private String urlMusicas = "http://www.testeteste.dx.am/?path=musicas";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,8 +112,7 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
 
             //-------------------- BAIXA A LETRA DAS MUSICAS -----------------------
             BuscaMuscia buscaMusica = new BuscaMuscia(this, bancoDeDados, dataSnapshot);
-            String urlApi = "https://webserviceaa.000webhostapp.com/?path=musicas";
-            buscaMusica.execute(urlApi);
+            buscaMusica.execute(urlMusicas);
 
         } catch (Exception e) {
             e.printStackTrace();

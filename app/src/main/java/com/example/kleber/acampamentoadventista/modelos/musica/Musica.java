@@ -4,7 +4,9 @@ package com.example.kleber.acampamentoadventista.modelos.musica;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Musica {
+import java.io.Serializable;
+
+public class Musica implements Serializable {
 
     @SerializedName("artista")
     @Expose

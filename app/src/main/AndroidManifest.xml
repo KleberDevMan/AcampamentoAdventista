@@ -39,7 +39,9 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
         <activity
-            android:name=".activity.RoteiroActivity" />
+            android:parentActivityName=".activity.MenuActivity"
+            android:name=".activity.RoteiroActivity"
+            tools:targetApi="jelly_bean" />
         <activity
             android:theme="@style/AppTheme2"
             android:name=".activity.NewsActivity"/>
@@ -62,7 +64,6 @@
         <activity android:name=".activity.PlayerActivity" />
         <activity android:name=".activity.MusicaActivity"
             android:parentActivityName=".activity.ListaMusicasActivity"
-            android:theme="@style/AppTheme"
             tools:targetApi="jelly_bean"/>
     </application>
 

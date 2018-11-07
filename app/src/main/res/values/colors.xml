@@ -7,5 +7,6 @@
     <color name="bg">#00405e</color>
     <color name="bg2">#00405e</color>
     <color name="celulaMusica">#204e64</color>
+    <color name="black">#000</color>
 
 </resources>
