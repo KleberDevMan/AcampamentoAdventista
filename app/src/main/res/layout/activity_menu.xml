@@ -61,7 +61,7 @@
             android:foregroundGravity="center">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/card_roteiro"
+                android:id="@+id/card_meditacao"
                 android:layout_width="110dp"
                 android:layout_height="103dp"
                 android:layout_gravity="center_horizontal|fill_horizontal|center"
@@ -75,7 +75,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:foregroundGravity="center_horizontal|center"
-                android:onClick="btnRoteiro"
+                android:onClick="btnMeditacao"
                 app:cardBackgroundColor="@color/bg"
                 app:cardCornerRadius="30dp"
                 app:cardElevation="10dp"
@@ -93,26 +93,25 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_roteiro"
+                        android:id="@+id/img_meditacao"
                         android:layout_width="66dp"
                         android:layout_height="49dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
                         android:contentDescription="TODO"
                         app:layout_constraintVertical_bias="0.09"
-                        app:srcCompat="@drawable/roteiro" />
+                        app:srcCompat="@drawable/meditacao" />
 
                     <TextView
-                        android:id="@+id/text_roteiro"
+                        android:id="@+id/text_informacao"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/roteiro"
+                        android:text="Informação"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -165,7 +164,6 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
@@ -199,7 +197,7 @@
             tools:layout_editor_absoluteY="122dp">
 
             <android.support.v7.widget.CardView
-                android:id="@+id/card_meditacao"
+                android:id="@+id/card_roteiro"
                 android:layout_width="110dp"
                 android:layout_height="103dp"
                 android:layout_gravity="center_horizontal|fill_horizontal|center"
@@ -213,7 +211,7 @@
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
                 android:foregroundGravity="center_horizontal|center"
-                android:onClick="btnMeditacao"
+                android:onClick="btnRoteiro"
                 app:cardBackgroundColor="@color/bg"
                 app:cardCornerRadius="30dp"
                 app:cardElevation="10dp"
@@ -231,26 +229,25 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/img_meditacao"
+                        android:id="@+id/img_roteiro"
                         android:layout_width="66dp"
                         android:layout_height="49dp"
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
                         android:contentDescription="TODO"
                         app:layout_constraintVertical_bias="0.09"
-                        app:srcCompat="@drawable/meditacao" />
+                        app:srcCompat="@drawable/roteiro" />
 
                     <TextView
-                        android:id="@+id/text_meditacao"
+                        android:id="@+id/text_roteiro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/meditacao"
+                        android:text="@string/roteiro"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"
@@ -303,7 +300,6 @@
                         android:layout_gravity="center"
                         android:layout_marginStart="8dp"
                         android:layout_marginLeft="8dp"
-                        android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
                         android:layout_marginRight="8dp"
                         android:layout_marginBottom="8dp"
