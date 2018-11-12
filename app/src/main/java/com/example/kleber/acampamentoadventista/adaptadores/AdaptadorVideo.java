@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
+import com.example.kleber.acampamentoadventista.modelos.youtubepojo.Item;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

@@ -8,20 +8,33 @@
 
     <TextView
         android:id="@+id/titulo_roteiro"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="titulo"
-        android:textSize="30dp" />
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:layout_marginTop="25dp"
+        android:fontFamily="@font/aldrich"
+        android:gravity="center"
+        android:text="Titulo"
+        android:textColor="@color/letra_musica"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/conteudo_roteiro"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="20dp"
-        android:text="conteudo" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/conteudo_roteiro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
+            android:paddingBottom="50dp"
+            android:text="conteudo"
+            android:textColor="@color/letra_musica"
+            android:textSize="18sp" />
+    </ScrollView>
 
 </LinearLayout>

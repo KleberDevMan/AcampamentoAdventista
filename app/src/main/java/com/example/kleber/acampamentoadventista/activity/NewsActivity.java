@@ -1,8 +1,10 @@
 package com.example.kleber.acampamentoadventista.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -15,21 +17,21 @@ import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorVideo;
-import com.example.kleber.acampamentoadventista.api.YouTubeSevice;
-import com.example.kleber.acampamentoadventista.helper.RetrofitConfig;
-import com.example.kleber.acampamentoadventista.helper.YouTubeConfig;
 import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
-import com.example.kleber.acampamentoadventista.modelos.youtube.Item;
-import com.example.kleber.acampamentoadventista.modelos.youtube.ResultYouTubeRequest;
+import com.example.kleber.acampamentoadventista.modelos.youtubepojo.Item;
+import com.example.kleber.acampamentoadventista.modelos.youtubepojo.YouTubeResult;
+import com.google.gson.Gson;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 
 public class NewsActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener,
         MaterialSearchView.SearchViewListener,
@@ -40,11 +42,7 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     private AdaptadorVideo adaptadorVideo;
     private MaterialSearchView searchView;
 
-    //Modelos da API youTube
     private List<Item> videos = new ArrayList<>();
-
-    //Retrofit
-    private Retrofit retrofit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,9 +58,6 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         //DEFINE LISTENER SEARCHVIEW
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchViewListener(this);
-
-        //CONFIGURA RetroFit
-        retrofit = RetrofitConfig.getRetrofit();
 
         //BUSCA VIDEOS NA INTERNET
         recuperarVideos();
@@ -84,35 +79,15 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
 
     //BUSCA VIDEOS NA INTERNET
     private void recuperarVideos() {
-        YouTubeSevice youTubeSevice = retrofit.create(YouTubeSevice.class);
-
-        String s = "abre";
-
-        //FAZ REQUISICAO HTTP
-        youTubeSevice.recuperarVideos(
-                "snippet", "date",
-                "10", YouTubeConfig.CHAVE_YOUTUBE_API,
-                YouTubeConfig.PLAYLIST
-
-        ).enqueue(new Callback<ResultYouTubeRequest>() {
-
-            //LE A RESPOSTA E COLOCA NA RECYCLER
-            @Override
-            public void onResponse(Call<ResultYouTubeRequest> call, Response<ResultYouTubeRequest> response) {
-                ResultYouTubeRequest resultado = response.body();
-                videos = resultado.getItems();
-                configurarRecyclerView();
-
-                String s = "fecha";
-            }
-
-
-            @Override
-            public void onFailure(Call<ResultYouTubeRequest> call, Throwable t) {
-                Toast.makeText(NewsActivity.this, "Sem internet. Tente novamente mais tarde.", Toast.LENGTH_SHORT).show();
-            }
-
-        });
+        //THREAD
+        BuscaVideos buscaVideos = new BuscaVideos(this);
+        String url = "https://www.googleapis.com/youtube/v3/" +
+                "playlistItems?part=snippet" +
+                "&order=date" +
+                "&maxResults=10" +
+                "&key=AIzaSyDWg9KAPB1QFIWFMKIix7jyYt2DayNtaaQ" +
+                "&playlistId=PLW7uo9ySXT6R-3jbIBOoNLVZ-LWuJH-cA";
+        buscaVideos.execute(url);
     }
 
     //SETA ARRAY LIST NA RECYCLER
@@ -210,6 +185,16 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     }
 
 
+
+
+
+
+
+
+
+
+
+
     // ----------- EVENTOS RecyclerView ------------
     @Override
     public void onItemClick(View view, int position) {
@@ -231,4 +216,85 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    class BuscaVideos extends AsyncTask<String, Void, YouTubeResult> {
+
+        private NewsActivity newsActivity;
+        private ProgressDialog vrProgress = null;
+
+        public BuscaVideos(NewsActivity newsActivity) {
+            this.newsActivity = newsActivity;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            vrProgress = new ProgressDialog(newsActivity);
+            vrProgress.setCancelable(false);
+            vrProgress.setCanceledOnTouchOutside(false);
+            vrProgress.setMessage("Carregando...");
+            vrProgress.setTitle("Aguarde!");
+            vrProgress.show();
+
+        }
+
+        @Override
+        protected YouTubeResult doInBackground(String... strings) {
+
+            String stringUrl = strings[0];
+            InputStream inputStream = null;
+            InputStreamReader inputStreamReader = null;
+            StringBuffer buffer = null;
+            try {
+                URL url = new URL(stringUrl);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+            Gson gson = new Gson();
+            //Converte String JSON para objeto Java
+            return gson.fromJson(buffer.toString(), YouTubeResult.class);
+        }
+
+        @Override
+        protected void onPostExecute(YouTubeResult youTubeResult) {
+            super.onPostExecute(youTubeResult);
+            vrProgress.dismiss();
+
+            if (youTubeResult == null)
+                Toast.makeText(newsActivity, "Sem internet.", Toast.LENGTH_SHORT).show();
+            else
+                videos = youTubeResult.getItems();
+                configurarRecyclerView();
+        }
+    }
+
 }

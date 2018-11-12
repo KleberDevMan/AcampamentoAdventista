@@ -16,7 +16,7 @@
         android:fontFamily="@font/aldrich"
         android:gravity="center"
         android:text="Nome música"
-        android:textColor="@android:color/white"
+        android:textColor="@color/letra_musica"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
         android:fontFamily="@font/aldrich"
         android:gravity="center"
         android:text="Nome artista"
-        android:textColor="@android:color/white"
+        android:textColor="@color/letra_musica"
         android:textSize="15sp" />
 
     <ScrollView
@@ -47,6 +47,7 @@
             android:layout_marginBottom="20dp"
             android:paddingBottom="50dp"
             android:text="Temos que aprender a ser humildes, tolerar\nBaixar a guarda em nome do amor\nOh, tanto a perder quando esquecemos de amar\nAfinal, todos somos filhos de deus\nSe um de nós está ferido, todos vão sentir\nSomos parte de um corpo devemos nos unir\n\nNós vamos dar as mãos, unidos como irmãos\nNós precisamos uns dos outros pra ter força\nEu conto com você, você confia em mim\nE assim ninguém está sozinho no mundo\nEstamos juntos\n\nCristo nos pediu pra vivermos em amor\nPorque então fazer separação\nPodemos construir um lugar acolhedor\nAceitar a quem necessitar\nSe um de nós está ferido, todos vão sentir\nSomos parte de um corpo devemos nos unir\n\nNós vamos dar as mãos, unidos como irmãos\nNós precisamos uns dos outros pra ter força\nEu conto com você, você confia em mim\nE assim ninguém está sozinho no mundo\n\nNós vamos dar as mãos, unidos como irmãos\nNós precisamos uns dos outros pra ter força\nEu conto com você, você confia em mim\nE assim ninguém está sozinho no mundo\n\nVamos levar a nossa luz\nVamos mostrar o amor de jesus\n\nNós vamos dar as mãos, unidos como irmãos\nNós precisamos uns dos outros pra ter força\nEu conto com você, você confia em mim\nE assim ninguem está sozinho no mundo\nNós temos força\nNós temos força"
+            android:textColor="@color/letra_musica"
             android:textSize="18sp" />
     </ScrollView>
 

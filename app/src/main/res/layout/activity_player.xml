@@ -18,7 +18,8 @@
         android:id="@+id/video_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="6dp"
+        android:layout_margin="10dp"
+        android:layout_marginBottom="5dp"
         android:gravity="center_vertical"
         android:text="TextView"
         android:textColor="@android:color/white"
@@ -26,15 +27,21 @@
         android:textStyle="bold"
         app:fontFamily="@font/aldrich" />
 
-    <TextView
-        android:id="@+id/video_descricao"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="6dp"
-        android:gravity="center_vertical"
-        android:text="TextView"
-        android:textColor="@android:color/white"
-        android:textSize="14dp"
-        app:fontFamily="@font/aldrich" />
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/video_descricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="6dp"
+            android:gravity="center_vertical"
+            android:paddingBottom="50dp"
+            android:text="TextView"
+            android:textColor="@android:color/white"
+            android:textSize="14dp"
+            app:fontFamily="@font/aldrich" />
+    </ScrollView>
 
 </LinearLayout>
