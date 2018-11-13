@@ -18,7 +18,7 @@ import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSabad
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSegundaFragment;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroSextaFragment;
 import com.example.kleber.acampamentoadventista.fragmentos.roteiros.RoteiroTercaFragment;
-import com.example.kleber.acampamentoadventista.modelos.Roteiro;
+import com.example.kleber.acampamentoadventista.modelos.roteiropojo.Roteiro;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,20 +56,27 @@ public class RoteiroActivity extends AppCompatActivity {
                     , MODE_PRIVATE, null);
 
             //RECUPERAR
-            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, conteudo FROM roteiros", null);
+            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, conteudo, url_imagem FROM roteiros", null);
 
             //INDICES DA TABELA
             int indiceTitulo = cursor.getColumnIndex("titulo");
             int indiceConteudo = cursor.getColumnIndex("conteudo");
+            int indiceUrlImagem = cursor.getColumnIndex("url_imagem");
 
             //PERCORE TABELA
             int i = 0;
             cursor.moveToFirst();
             while (cursor != null) {
-                inicializaRoteiroFragment(i, dicionario, cursor.getString(indiceTitulo), cursor.getString(indiceConteudo));
+                inicializaRoteiroFragment(i
+                        , dicionario
+                        , cursor.getString(indiceTitulo)
+                        , cursor.getString(indiceConteudo)
+                        , cursor.getString(indiceUrlImagem));
+
                 cursor.moveToNext();
                 i++;
 
+                //////////// TIRAR!!!!
                 if (i == 2)
                     break;
             }
@@ -82,7 +89,7 @@ public class RoteiroActivity extends AppCompatActivity {
 
         // SETO OS FRAGMENTOS NO ADPTER
         adapter.AddFragment(roteiroSextaFragment, getString(R.string.sexta));
-        adapter.AddFragment(roteiroSabadoFragment, getString(R.string.sabado));
+//        adapter.AddFragment(roteiroSabadoFragment, getString(R.string.sabado));
 
         // SETO O ADAPTER NA VIEW PAGE
         viewPager.setAdapter(adapter);
@@ -105,20 +112,20 @@ public class RoteiroActivity extends AppCompatActivity {
 
 
     //INICIALIZO O FRAGMENTO ROTEIRO COM DADOS DO SQLITE
-    private void inicializaRoteiroFragment(int posicao, Bundle dicionario, String titulo, String conteudo) {
+    private void inicializaRoteiroFragment(int posicao, Bundle dicionario, String titulo, String conteudo, String url_imagem) {
 
         Roteiro r = null;
 
         switch (posicao){
 
             case 0:
-                r = new Roteiro(titulo, conteudo);
+                r = new Roteiro(titulo, conteudo, url_imagem);
                 dicionario.putSerializable(Roteiros.SEXTA.name(), r);
                 roteiroSextaFragment = new RoteiroSextaFragment();
                 roteiroSextaFragment.setArguments(dicionario);
                 break;
             case 1:
-                r = new Roteiro(titulo, conteudo);
+                r = new Roteiro(titulo, conteudo, url_imagem);
                 dicionario.putSerializable(Roteiros.SABADO.name(), r);
                 roteiroSabadoFragment = new RoteiroSabadoFragment();
                 roteiroSabadoFragment.setArguments(dicionario);
