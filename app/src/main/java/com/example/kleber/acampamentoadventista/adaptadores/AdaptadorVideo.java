@@ -20,11 +20,23 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
     private List<Item> videos;
     private Context context;
 
+    //CONSTRUTOR
     public AdaptadorVideo(List<Item> videos, Context context) {
         this.videos = videos;
         this.context = context;
     }
 
+
+
+
+
+
+
+
+
+
+
+    //CRIO O VIEW HOLDER
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -33,7 +45,7 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
         return new MyViewHolder(view);
     }
 
-    //transformando o objeto em celula
+    //OBJETO -> VIEW
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
@@ -45,10 +57,32 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
 
     }
 
+    //RETORNA OS NUMERO DE CELULAS
     @Override
     public int getItemCount() {
         return videos.size();
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     class MyViewHolder extends RecyclerView.ViewHolder {
 

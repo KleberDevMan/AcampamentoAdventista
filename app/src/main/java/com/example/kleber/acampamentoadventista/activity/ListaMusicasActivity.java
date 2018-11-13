@@ -30,8 +30,8 @@ public class ListaMusicasActivity extends AppCompatActivity
 
     private RecyclerView recyclerView;
 
-    private List<Musica> musicasVindasDoBanco;
-    private List<Musica> musicasDinamica;
+    private List<Musica> musicas;
+    private List<Musica> musicasPesquisa;
     private AdaptadorMusicas adaptadorMusicas;
     private MaterialSearchView searchView;
 
@@ -46,9 +46,11 @@ public class ListaMusicasActivity extends AppCompatActivity
         inicializaComponentes();
         configuraToolbar();
 
-        //CONFIGURA RECYCLER
+        //RECUPERA AS MUSICAS
         recuperaMusicas();
-        adaptadorMusicas = new AdaptadorMusicas(this, musicasVindasDoBanco);
+
+        //CONFIGURA RECYCLER
+        adaptadorMusicas = new AdaptadorMusicas(this, musicas);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptadorMusicas);
@@ -71,7 +73,8 @@ public class ListaMusicasActivity extends AppCompatActivity
     }
     private void inicializaComponentes() {
         recyclerView = findViewById(R.id.lista_musicas);
-        musicasVindasDoBanco = new ArrayList<>();
+        musicas = new ArrayList<>();
+        musicasPesquisa = new ArrayList<>();
         searchView = findViewById(R.id.materialSearchView);
         dicionario = new Bundle();
     }
@@ -79,8 +82,8 @@ public class ListaMusicasActivity extends AppCompatActivity
 
     //RECARREGA A LISTA COM TODAS AS MUSICAS
     private void recarregarMusicas() {
-        musicasDinamica = musicasVindasDoBanco;
-        adaptadorMusicas = new AdaptadorMusicas(this, musicasDinamica);
+        musicasPesquisa = musicas;
+        adaptadorMusicas = new AdaptadorMusicas(this, musicasPesquisa);
         recyclerView.setAdapter(adaptadorMusicas);
         adaptadorMusicas.notifyDataSetChanged();
     }
@@ -88,25 +91,28 @@ public class ListaMusicasActivity extends AppCompatActivity
     //FILTA MUSICAS
     private void pesquisarMusicas(String texto) {
 
-        //busca na lista de musicasVindasDoBanco e salva em uma outra lista
-        for (Musica musica : musicasVindasDoBanco) {
+        //LIMPA A LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        this.musicasPesquisa.clear();
+
+        //PREENCHE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        for (Musica musica : this.musicas) {
 
             String nome = musica.getTitulo().toLowerCase();
             String cantor = musica.getArtista().toLowerCase();
             String letra = musica.getLetra().toLowerCase();
 
             if (nome.contains(texto) || cantor.contains(texto) || letra.contains(texto)) {
-                musicasDinamica.add(musica);
+                this.musicasPesquisa.add(musica);
             }
         }
 
-        //exibe na recycler uma lista de musicasVindasDoBanco filtrada
-        adaptadorMusicas = new AdaptadorMusicas(this, musicasDinamica);
+        //EXIBE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        adaptadorMusicas = new AdaptadorMusicas(this, this.musicasPesquisa);
         recyclerView.setAdapter(adaptadorMusicas);
         adaptadorMusicas.notifyDataSetChanged();
     }
 
-    //RECUPERA AS MUSICAS VINDAS DO BANCO
+    //RECUPERA AS MUSICAS DO BANCO
     private void recuperaMusicas() {
 
         //SQLite
@@ -134,18 +140,15 @@ public class ListaMusicasActivity extends AppCompatActivity
                 String letra = cursor.getString(indiceLetra);
                 Integer id = cursor.getInt(indiceLetra);
 
-                musicasVindasDoBanco.add(new Musica(artista
+                musicas.add(new Musica(artista
                         , titulo
                         , letra
                         , id));
 
                 cursor.moveToNext();
                 i++;
-//
-//                if (i == 2)
-//                    break;
             }
-            musicasDinamica = musicasVindasDoBanco;
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -195,19 +198,19 @@ public class ListaMusicasActivity extends AppCompatActivity
     // ----------- EVENTOS RecyclerView ------------
     @Override
     public void onItemClick(View view, int position) {
-//        BuscaMuscia buscaMusica = new BuscaMuscia(this);
-//        String urlApi = "https://api.vagalume.com.br/search.php?art=" + m.getArtista() + "&mus=" + m.getNome() + "&apikey=" + chaveApiVagalume;
-//        buscaMusica.execute(urlApi);
-//        Toast.makeText(this, m.getTitulo(), Toast.LENGTH_SHORT).show();
+        Musica m;
 
+        //ON CLICK NA LISTA COM TODAS AS MUSICAS
+        if (musicasPesquisa.size() == 0)
+            m = musicas.get(position);
+        else
+            //CLICK NA LISTA COM MUSICAS FILTRADAS
+            m = musicasPesquisa.get(position);
 
-        Musica m = musicasDinamica.get(position);
-//
+        //EXIBE A MUSICA
         Intent intent = new Intent(this, MusicaActivity.class);
-
         dicionario.putSerializable("musica", m);
         intent.putExtras(dicionario);
-
         startActivity(intent);
     }
     @Override
@@ -215,7 +218,6 @@ public class ListaMusicasActivity extends AppCompatActivity
     }
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
 
@@ -254,7 +256,6 @@ public class ListaMusicasActivity extends AppCompatActivity
     // ----------- EVENTOS SearchViewListener (quando clica em um dos botoes da busca) ------------
     @Override
     public void onSearchViewShown() {
-
     }
     @Override
     public void onSearchViewClosed() {

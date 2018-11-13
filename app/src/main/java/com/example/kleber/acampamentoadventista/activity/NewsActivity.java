@@ -63,8 +63,6 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         recuperarVideos();
     }
 
-
-
     private void configuraToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
