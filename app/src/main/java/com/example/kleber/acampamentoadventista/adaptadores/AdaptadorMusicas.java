@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.modelos.musica.Musica;
+import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Holder>{
 
@@ -45,11 +47,11 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         Musica musica = musicas.get(position);
-        holder.titulo.setText(musica.getTitulo());
-        holder.artista.setText(musica.getArtista());
+        holder.titulo.setText(musica.getTitle());
+        holder.artista.setText(musica.getArtist());
 
-//        String url = musica.getUrlImage;
-//        Picasso.get().load(url).into(holder.capa);
+        String url = musica.getUrlImage();
+        Picasso.get().load(url).into(holder.imageView);
     }
 
     //RETORNO A QUANTIDADE DE ITENS QUE SERAO EXIBIDOR
@@ -78,11 +80,13 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
 
         TextView titulo;
         TextView artista;
+        CircleImageView imageView;
 
         public Holder(View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.celula_titulo);
             artista = itemView.findViewById(R.id.celula_artista);
+            imageView = itemView.findViewById(R.id.celula_album);
         }
     }
 }

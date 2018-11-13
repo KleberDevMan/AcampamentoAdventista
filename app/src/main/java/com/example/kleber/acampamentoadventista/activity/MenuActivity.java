@@ -1,8 +1,6 @@
 package com.example.kleber.acampamentoadventista.activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,24 +9,26 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.activity.enuns.Roteiros;
-import com.example.kleber.acampamentoadventista.modelos.musica.Musica;
-import com.example.kleber.acampamentoadventista.modelos.musica.Musicas;
+//import com.example.kleber.acampamentoadventista.modelos.musica.Musicas;
+import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
+import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musicas;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,7 +44,7 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
     private List<Musica> musicas = new ArrayList<>();
 
     //WEB_SERVICE
-    private String urlMusicas = "http://www.testeteste.dx.am/?path=musicas";
+    private String urlMusicas = "https://fierce-inlet-45074.herokuapp.com/musics.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -136,7 +136,7 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
 
     class BuscaMuscia extends AsyncTask<String, Void, List<Musica>> {
 
-//        ProgressDialog vrProgress = null;
+        //        ProgressDialog vrProgress = null;
         private AppCompatActivity activity = null;
         private SQLiteDatabase bancoDeDados;
         private DataSnapshot dataSnapshot;
@@ -188,19 +188,21 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
 
             Gson gson = new Gson();
 
-            Musicas musicas = null;
+            List<Musica> musicas = null;
+
+            Type collectionType = new TypeToken<List<Musica>>() {}.getType();
 
             try {
-                musicas = gson.fromJson(buffer.toString(), Musicas.class);
+//                musicas.setMusicas((List<Musica>) gson.fromJson(buffer.toString(), Musica.class));
+                musicas = gson.fromJson(buffer.toString(), collectionType);
             } catch (Exception e) {
                 e.printStackTrace();
-//                Toast.makeText(activity, "Não foi possivel sincronizar.", Toast.LENGTH_SHORT);
             }
 
             if (musicas == null)
                 return null;
             else
-                return musicas.getMusicas();
+                return musicas;
         }
 
         @Override
@@ -211,10 +213,10 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
                 Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
             } else {
 
-
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS musicas");
 
                 //CRIA TABELA
-                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS musicas ( titulo VARCHAR, artista VARCHAR, letra VARCHAR, id INTEGER)");
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS musicas ( titulo VARCHAR, artista VARCHAR, letra VARCHAR, id INTEGER, url_imagem VARCHAR)");
 
                 //APAGA MUSICAS
                 bancoDeDados.execSQL("DELETE FROM musicas;");
@@ -233,7 +235,7 @@ public class MenuActivity extends AppCompatActivity implements ValueEventListene
 
     private void insereMusicaDBLocal(SQLiteDatabase bancoDeDados, DataSnapshot dataSnapshot, Musica m) {
 
-        bancoDeDados.execSQL("INSERT INTO musicas(titulo, artista, letra, id) VALUES('" + m.getTitulo() + "', '" + m.getArtista() + "', '" + m.getLetra() +"', '"+ m.getId() +"') ");
+        bancoDeDados.execSQL("INSERT INTO musicas(titulo, artista, letra, id, url_imagem) VALUES('" + m.getTitle() + "', '" + m.getArtist() + "', '" + m.getLyric() + "', '" + m.getId() + "','" + m.getUrlImage() + "') ");
 
     }
 

@@ -17,7 +17,7 @@ import android.widget.AdapterView;
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.adaptadores.AdaptadorMusicas;
 import com.example.kleber.acampamentoadventista.listeners.RecyclerItemClickListener;
-import com.example.kleber.acampamentoadventista.modelos.musica.Musica;
+import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
@@ -97,9 +97,9 @@ public class ListaMusicasActivity extends AppCompatActivity
         //PREENCHE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
         for (Musica musica : this.musicas) {
 
-            String nome = musica.getTitulo().toLowerCase();
-            String cantor = musica.getArtista().toLowerCase();
-            String letra = musica.getLetra().toLowerCase();
+            String nome = musica.getTitle().toLowerCase();
+            String cantor = musica.getArtist().toLowerCase();
+            String letra = musica.getLyric().toLowerCase();
 
             if (nome.contains(texto) || cantor.contains(texto) || letra.contains(texto)) {
                 this.musicasPesquisa.add(musica);
@@ -122,28 +122,27 @@ public class ListaMusicasActivity extends AppCompatActivity
                     , MODE_PRIVATE, null);
 
             //RECUPERAR
-            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, artista, letra, id FROM musicas", null);
+            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, artista, letra, id, url_imagem FROM musicas", null);
 
             //INDICES DA TABELA
             int indiceTitulo = cursor.getColumnIndex("titulo");
             int indiceArtista = cursor.getColumnIndex("artista");
             int indiceLetra = cursor.getColumnIndex("letra");
             int indiceId = cursor.getColumnIndex("id");
+            int indiceUrlImagem = cursor.getColumnIndex("url_imagem");
 
             //PERCORE TABELA
             int i = 0;
             cursor.moveToFirst();
             while (cursor != null) {
 
-                String artista = cursor.getString(indiceArtista);
-                String titulo = cursor.getString(indiceTitulo);
-                String letra = cursor.getString(indiceLetra);
+                String artist = cursor.getString(indiceArtista);
+                String title = cursor.getString(indiceTitulo);
+                String lyric = cursor.getString(indiceLetra);
                 Integer id = cursor.getInt(indiceLetra);
+                String urlImage = cursor.getString(indiceUrlImagem);
 
-                musicas.add(new Musica(artista
-                        , titulo
-                        , letra
-                        , id));
+                musicas.add(new Musica(id, title, lyric, artist, urlImage));
 
                 cursor.moveToNext();
                 i++;

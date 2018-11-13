@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.modelos.musica.Musica;
+import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
 
 public class MusicaActivity extends AppCompatActivity {
 
@@ -27,9 +27,9 @@ public class MusicaActivity extends AppCompatActivity {
 
         Musica m = (Musica) bundle.getSerializable("musica");
 
-        titulo.setText(m.getTitulo());
-        artista.setText(m.getArtista());
-        letra.setText(m.getLetra());
+        titulo.setText(m.getTitle());
+        artista.setText(m.getArtist());
+        letra.setText(m.getLyric().replace("\\n", "\n"));
 
     }
 }
