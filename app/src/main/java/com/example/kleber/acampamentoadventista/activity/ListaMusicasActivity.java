@@ -88,30 +88,6 @@ public class ListaMusicasActivity extends AppCompatActivity
         adaptadorMusicas.notifyDataSetChanged();
     }
 
-    //FILTA MUSICAS
-    private void pesquisarMusicas(String texto) {
-
-        //LIMPA A LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
-        this.musicasPesquisa.clear();
-
-        //PREENCHE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
-        for (Musica musica : this.musicas) {
-
-            String nome = musica.getTitle().toLowerCase();
-            String cantor = musica.getArtist().toLowerCase();
-            String letra = musica.getLyric().toLowerCase();
-
-            if (nome.contains(texto) || cantor.contains(texto) || letra.contains(texto)) {
-                this.musicasPesquisa.add(musica);
-            }
-        }
-
-        //EXIBE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
-        adaptadorMusicas = new AdaptadorMusicas(this, this.musicasPesquisa);
-        recyclerView.setAdapter(adaptadorMusicas);
-        adaptadorMusicas.notifyDataSetChanged();
-    }
-
     //RECUPERA AS MUSICAS DO BANCO
     private void recuperaMusicas() {
 
@@ -153,6 +129,32 @@ public class ListaMusicasActivity extends AppCompatActivity
         }
 
     }
+
+    //FILTA MUSICAS
+    private void pesquisarMusicas(String texto) {
+
+        //LIMPA A LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        this.musicasPesquisa.clear();
+
+        //PREENCHE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        for (Musica musica : this.musicas) {
+
+            String nome = musica.getTitle().toLowerCase();
+            String cantor = musica.getArtist().toLowerCase();
+            String letra = musica.getLyric().toLowerCase();
+
+            if (nome.contains(texto) || cantor.contains(texto) || letra.contains(texto)) {
+                this.musicasPesquisa.add(musica);
+            }
+        }
+
+        //EXIBE LISTA COM MUSICAS QUE CONTEEM TEXTO DIGITADO
+        adaptadorMusicas = new AdaptadorMusicas(this, this.musicasPesquisa);
+        recyclerView.setAdapter(adaptadorMusicas);
+        adaptadorMusicas.notifyDataSetChanged();
+    }
+
+
 
     //CONVERTE IMAGENS SALVAS NOS RECURSOS EM BITMAP
 //    private Bitmap carregaImagem(int id) {

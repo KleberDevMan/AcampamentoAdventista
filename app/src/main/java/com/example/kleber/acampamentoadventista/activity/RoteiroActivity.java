@@ -31,6 +31,9 @@ public class RoteiroActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
 
+    //ADAPTER PARA OS FRAGMENTS
+    AdaptadorDePaginas adapter;
+
     //ROTEIROS
     private RoteiroSextaFragment roteiroSextaFragment;
     private RoteiroSabadoFragment roteiroSabadoFragment;
@@ -77,19 +80,25 @@ public class RoteiroActivity extends AppCompatActivity {
                 i++;
 
                 //////////// TIRAR!!!!
-                if (i == 2)
+                //QTD DE FRAGMENTOS PRONTOS
+                if (i == 5) {
                     break;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
 
         // CRIO O ADAPTER
-        AdaptadorDePaginas adapter = new AdaptadorDePaginas(getSupportFragmentManager());
+        adapter = new AdaptadorDePaginas(getSupportFragmentManager());
 
         // SETO OS FRAGMENTOS NO ADPTER
         adapter.AddFragment(roteiroSextaFragment, getString(R.string.sexta));
-//        adapter.AddFragment(roteiroSabadoFragment, getString(R.string.sabado));
+        adapter.AddFragment(roteiroSabadoFragment, getString(R.string.sabado));
+        adapter.AddFragment(roteiroDomingoFragment, getString(R.string.domingo));
+        adapter.AddFragment(roteiroSegundaFragment, getString(R.string.segunda));
+        adapter.AddFragment(roteiroTercaFragment, getString(R.string.terca));
+
 
         // SETO O ADAPTER NA VIEW PAGE
         viewPager.setAdapter(adapter);
@@ -102,6 +111,7 @@ public class RoteiroActivity extends AppCompatActivity {
             getSupportActionBar().setTitle("");
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
+            getSupportActionBar().setElevation(1);
         }
     }
     private void inicializaComponentes() {
@@ -131,10 +141,22 @@ public class RoteiroActivity extends AppCompatActivity {
                 roteiroSabadoFragment.setArguments(dicionario);
                 break;
             case 2:
+                r = new Roteiro(titulo, conteudo, url_imagem);
+                dicionario.putSerializable(Roteiros.DOMINGO.name(), r);
+                roteiroDomingoFragment = new RoteiroDomingoFragment();
+                roteiroDomingoFragment.setArguments(dicionario);
                 break;
             case 3:
+                r = new Roteiro(titulo, conteudo, url_imagem);
+                dicionario.putSerializable(Roteiros.SEGUNDA.name(), r);
+                roteiroSegundaFragment = new RoteiroSegundaFragment();
+                roteiroSegundaFragment.setArguments(dicionario);
                 break;
             case 4:
+                r = new Roteiro(titulo, conteudo, url_imagem);
+                dicionario.putSerializable(Roteiros.TERCA.name(), r);
+                roteiroTercaFragment = new RoteiroTercaFragment();
+                roteiroTercaFragment.setArguments(dicionario);
                 break;
             case 5:
                 break;

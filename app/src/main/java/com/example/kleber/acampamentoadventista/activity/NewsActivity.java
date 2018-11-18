@@ -43,6 +43,7 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     private MaterialSearchView searchView;
 
     private List<Item> videos = new ArrayList<>();
+    private List<Item> videosPesquisa = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +76,15 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         searchView = findViewById(R.id.materialSearchView);
     }
 
+
+
+    //RECARREGA A LISTA COM TODAS OS VIDEOS
+    private void recarregarVideos() {
+        adaptadorVideo = new AdaptadorVideo(videos, this);
+        recyclerVideos.setAdapter(adaptadorVideo);
+        adaptadorVideo.notifyDataSetChanged();
+    }
+
     //BUSCA VIDEOS NA INTERNET
     private void recuperarVideos() {
         //THREAD
@@ -82,9 +92,9 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         String url = "https://www.googleapis.com/youtube/v3/" +
                 "playlistItems?part=snippet" +
                 "&order=date" +
-                "&maxResults=10" +
+                "&maxResults=20" +
                 "&key=AIzaSyDWg9KAPB1QFIWFMKIix7jyYt2DayNtaaQ" +
-                "&playlistId=PLW7uo9ySXT6R-3jbIBOoNLVZ-LWuJH-cA";
+                "&playlistId=PLdKdSz4_lV0rcBygal6Pb4CYL2YQDpNGK";
         buscaVideos.execute(url);
     }
 
@@ -96,16 +106,12 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
         recyclerVideos.setAdapter(adaptadorVideo);
     }
 
-    //RECARREGA A LISTA COM TODAS OS VIDEOS
-    private void recarregarVideos() {
-        adaptadorVideo = new AdaptadorVideo(videos, this);
-        recyclerVideos.setAdapter(adaptadorVideo);
-        adaptadorVideo.notifyDataSetChanged();
-    }
 
     //LISTA OS VIDEOS POR PARAMETRO
     private void pesquisarVideos(String texto) {
-        List<Item> videosBusca = new ArrayList<>();
+
+        //LIMPA A LISTA COM VIDEOS QUE CONTEEM TEXTO DIGITADO
+        this.videosPesquisa.clear();
 
         //BUSCA A LISTA NA LISTA DE VIDEOS E SALVA EM OUTRA LISTA
         for (Item video : videos) {
@@ -113,12 +119,12 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
             String titulo = video.getSnippet().getTitle().toLowerCase();
 
             if (titulo.contains(texto)) {
-                videosBusca.add(video);
+                videosPesquisa.add(video);
             }
         }
 
         //RECONFIRA RECYCLER
-        adaptadorVideo = new AdaptadorVideo(videosBusca, this);
+        adaptadorVideo = new AdaptadorVideo(videosPesquisa, this);
         recyclerVideos.setAdapter(adaptadorVideo);
         adaptadorVideo.notifyDataSetChanged();
     }
@@ -196,7 +202,14 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
     // ----------- EVENTOS RecyclerView ------------
     @Override
     public void onItemClick(View view, int position) {
-        Item video = videos.get(position);
+        Item video;
+
+        //ON CLICK NA LISTA COM TODOS OS VIDEOS
+        if (videosPesquisa.size() == 0)
+            video = videos.get(position);
+        else
+            //CLICK NA LISTA COM VIDEOS FILTRADOS
+            video = videosPesquisa.get(position);
 
         Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
         i.putExtra("idVideo", video.getSnippet().getResourceId().getVideoId());

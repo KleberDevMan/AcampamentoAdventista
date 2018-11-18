@@ -7,11 +7,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.activity.enuns.Roteiros;
 import com.example.kleber.acampamentoadventista.modelos.roteiropojo.Roteiro;
+import com.squareup.picasso.Picasso;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,28 +25,25 @@ public class RoteiroSabadoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    TextView titulo;
-    TextView conteudo;
-    Bundle dicionario;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_roteiro_fragmento, container, false);
+        View view = inflater.inflate(R.layout.fragment_roteiro_fragmento_sabado, container, false);
 
-        titulo = view.findViewById(R.id.titulo_roteiro);
-        conteudo = view.findViewById(R.id.conteudo_roteiro);
+        //REFERENCIO COMPONENTES
+        TextView conteudo = view.findViewById(R.id.conteudo_roteiro_sabado);
+        ImageView imageView = view.findViewById(R.id.image_roteiro_sabado);
 
-        dicionario = getArguments();
-
-        int i = dicionario.size();
+        Bundle dicionario = getArguments();
 
         if (dicionario.size() != 0) {
+            //PEGO OBJETO NO DICIONARIO DE DADOS
             Roteiro r = (Roteiro) dicionario.getSerializable(Roteiros.SABADO.name());
 
-            titulo.setText(r.getTitle());
+            //SETO DADOS NA VIEW
             conteudo.setText(r.getContent().replace("\\n", "\n"));
+            Picasso.get().load(r.getUrlImage()).into(imageView);
         }
         return view;
     }
