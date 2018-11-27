@@ -98,7 +98,7 @@ public class ListaMusicasActivity extends AppCompatActivity
                     , MODE_PRIVATE, null);
 
             //RECUPERAR
-            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, artista, letra, id, url_imagem FROM musicas", null);
+            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, artista, letra, id, url_imagem FROM musicas ORDER BY titulo ASC", null);
 
             //INDICES DA TABELA
             int indiceTitulo = cursor.getColumnIndex("titulo");
