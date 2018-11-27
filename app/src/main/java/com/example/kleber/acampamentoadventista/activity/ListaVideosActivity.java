@@ -33,7 +33,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener,
+public class ListaVideosActivity extends AppCompatActivity implements MaterialSearchView.OnQueryTextListener,
         MaterialSearchView.SearchViewListener,
         RecyclerItemClickListener.OnItemClickListener {
 
@@ -211,7 +211,7 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
             //CLICK NA LISTA COM VIDEOS FILTRADOS
             video = videosPesquisa.get(position);
 
-        Intent i = new Intent(NewsActivity.this, PlayerActivity.class);
+        Intent i = new Intent(ListaVideosActivity.this, PlayerActivity.class);
         i.putExtra("idVideo", video.getSnippet().getResourceId().getVideoId());
         i.putExtra("title", video.getSnippet().getTitle());
         i.putExtra("descricao", video.getSnippet().getDescription());
@@ -242,18 +242,18 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
 
     class BuscaVideos extends AsyncTask<String, Void, YouTubeResult> {
 
-        private NewsActivity newsActivity;
+        private ListaVideosActivity listaVideosActivity;
         private ProgressDialog vrProgress = null;
 
-        public BuscaVideos(NewsActivity newsActivity) {
-            this.newsActivity = newsActivity;
+        public BuscaVideos(ListaVideosActivity listaVideosActivity) {
+            this.listaVideosActivity = listaVideosActivity;
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
 
-            vrProgress = new ProgressDialog(newsActivity);
+            vrProgress = new ProgressDialog(listaVideosActivity);
             vrProgress.setCancelable(false);
             vrProgress.setCanceledOnTouchOutside(false);
             vrProgress.setMessage("Carregando...");
@@ -301,7 +301,7 @@ public class NewsActivity extends AppCompatActivity implements MaterialSearchVie
             vrProgress.dismiss();
 
             if (youTubeResult == null)
-                Toast.makeText(newsActivity, "Sem internet.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(listaVideosActivity, "Sem internet.", Toast.LENGTH_SHORT).show();
             else
                 videos = youTubeResult.getItems();
                 configurarRecyclerView();

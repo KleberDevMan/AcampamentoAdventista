@@ -40,26 +40,18 @@
             android:resource="@array/preloaded_fonts" />
         <activity
             android:parentActivityName=".activity.MenuActivity"
-            android:name=".activity.RoteiroActivity"
+            android:name=".activity.RoteirosActivity"
             tools:targetApi="jelly_bean" />
         <activity
             android:theme="@style/AppTheme2"
-            android:name=".activity.NewsActivity"/>
+            android:name=".activity.ListaVideosActivity"/>
         <activity
-            android:name=".activity.MeditacaoActivity"
+            android:name=".activity.InformesActivity"
             android:parentActivityName=".activity.MenuActivity"
             tools:targetApi="jelly_bean" />
         <activity
             android:name=".activity.ContatosActivity"
             android:parentActivityName=".activity.MenuActivity"
-            tools:targetApi="jelly_bean" />
-        <activity
-            android:name=".activity.CompartilharActivity"
-            android:parentActivityName=".activity.MenuActivity"
-            tools:targetApi="jelly_bean" />
-        <activity
-            android:name=".activity.MolduraActivity"
-            android:parentActivityName=".activity.CompartilharActivity"
             tools:targetApi="jelly_bean" />
         <activity android:name=".activity.PlayerActivity" />
         <activity android:name=".activity.MusicaActivity"

@@ -2,9 +2,9 @@ package com.example.kleber.acampamentoadventista.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,14 +12,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.activity.enuns.Roteiros;
+import com.example.kleber.acampamentoadventista.modelos.informepojo.Informe;
 import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
 import com.example.kleber.acampamentoadventista.modelos.roteiropojo.Roteiro;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -31,16 +26,18 @@ import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
-public class MenuActivity extends AppCompatActivity{
+public class MenuActivity extends AppCompatActivity {
 
-    //WEB_SERVICE MUSICAS
+    //WEB_SERVICE: MUSICAS
     private String urlMusicas = "https://fierce-inlet-45074.herokuapp.com/musics.json";
 
-    //WEB_SERVICE ROTEIROS
+    //WEB_SERVICE: ROTEIROS
     private String urlRoteiros = "https://fierce-inlet-45074.herokuapp.com/scripts.json";
+
+    //WEB_SERVICE: INFORMES
+    private String urlInformes = "https://fierce-inlet-45074.herokuapp.com/infos.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,19 +53,24 @@ public class MenuActivity extends AppCompatActivity{
     }
 
     public void btnRoteiro(View botao) {
-        Intent intencao = new Intent(this, RoteiroActivity.class);
+        Intent intencao = new Intent(this, RoteirosActivity.class);
         this.startActivity(intencao);
     }
 
     public void btnNews(View botao) {
-        Intent intencao = new Intent(this, NewsActivity.class);
+        Intent intencao = new Intent(this, ListaVideosActivity.class);
         this.startActivity(intencao);
     }
 
     public void btnMeditacao(View botao) {
-        Intent intencao = new Intent(this, MeditacaoActivity.class);
+        Intent intencao = new Intent(this, InformesActivity.class);
         this.startActivity(intencao);
     }
+
+//    public void btnContatos(View botao) {
+//        Intent intencao = new Intent(this, ContatosActivity.class);
+//        this.startActivity(intencao);
+//    }
 
     //INFLANDO ITENS_DE_ MENU NA ACTION_BAR
     @Override
@@ -95,12 +97,18 @@ public class MenuActivity extends AppCompatActivity{
             BuscaMuscia buscaMusica = new BuscaMuscia(this, bancoDeDados);
             buscaMusica.execute(urlMusicas);
 
+            //-------------------- BAIXA INFORMATIVOS -----------------------
+            BuscaInformes buscaInformes = new BuscaInformes(this, bancoDeDados);
+            buscaInformes.execute(urlInformes);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
+    //TREAD QUE BUSCA OS ROTEIROS
     class BuscaRoteiros extends AsyncTask<String, Void, List<Roteiro>> {
 
         private AppCompatActivity activity = null;
@@ -187,6 +195,7 @@ public class MenuActivity extends AppCompatActivity{
         }
     }
 
+    //TREAD QUE BUSCA A LETRA DAS MUSICAS
     class BuscaMuscia extends AsyncTask<String, Void, List<Musica>> {
 
         private AppCompatActivity activity = null;
@@ -271,6 +280,93 @@ public class MenuActivity extends AppCompatActivity{
                 }
 
 
+                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
+            }
+        }
+    }
+
+    //TREAD QUE BUSCA OS INFORMATIVOS
+    class BuscaInformes extends AsyncTask<String, Void, List<Informe>> {
+
+        private AppCompatActivity activity = null;
+        private SQLiteDatabase bancoDeDados;
+
+        public BuscaInformes(AppCompatActivity activity, SQLiteDatabase bancoDeDados) {
+            this.activity = activity;
+            this.bancoDeDados = bancoDeDados;
+        }
+
+        @Override
+        protected List<Informe> doInBackground(String... strings) {
+
+            String stringUrl = strings[0];
+            InputStream inputStream = null;
+            InputStreamReader inputStreamReader = null;
+            StringBuffer buffer = null;
+
+            try {
+
+                URL url = new URL(stringUrl);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Gson gson = new Gson();
+
+            List<Informe> informes = null;
+
+            Type collectionType = new TypeToken<List<Informe>>() {}.getType();
+
+            try {
+                informes = gson.fromJson(buffer.toString(), collectionType);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            if (informes == null)
+                return null;
+            else
+                return informes;
+        }
+
+        @Override
+        protected void onPostExecute(List<Informe> informes) {
+            super.onPostExecute(informes);
+
+            if (informes == null) {
+                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
+            } else {
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS informes");
+
+                //CRIA TABELA
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS informes(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
+
+                //APAGA ROTEIROS
+                bancoDeDados.execSQL("DELETE FROM informes;");
+
+                for (Informe informe : informes) {
+                    //INSERE MUSICA
+                    bancoDeDados.execSQL("INSERT INTO informes(id, titulo, conteudo, url_imagem) VALUES('" + informe.getId() + "', '" + informe.getTitle() + "', '" + informe.getContent() + "', '" + informe.getUrlImage() + "') ");
+                }
                 Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }
         }

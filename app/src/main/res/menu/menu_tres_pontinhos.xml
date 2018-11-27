@@ -2,12 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@+id/menu_tres_pontinhos"
-        android:title="@string/titulo_item_men_pesquisar"
-        app:showAsAction="never"/>
+    <!--<item android:id="@+id/menu_tres_pontinhos"-->
+        <!--android:title="@string/titulo_item_men_pesquisar"-->
+        <!--app:showAsAction="never"/>-->
 
-    <item android:id="@+id/contatos"
+    <item
+        android:id="@+id/contatos"
         android:title="@string/contatos"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
 
 </menu>

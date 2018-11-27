@@ -25,7 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class RoteiroActivity extends AppCompatActivity {
+public class RoteirosActivity extends AppCompatActivity {
 
     //NAVEGACAO
     private TabLayout tabLayout;

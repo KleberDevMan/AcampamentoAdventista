@@ -22,4 +22,9 @@
     <string name="titulo_item_men_pesquisar">Pesquisar</string>
     <string name="publicar">Publicar</string>
     <string name="filtro">Filtro</string>
+
+    <string name="mandamentos">Mandamentos</string>
+    <string name="mensagem">Mensagem</string>
+    <string name="o_que_levar">O que levar</string>
+    <string name="regras">Regras</string>
 </resources>
