@@ -173,14 +173,14 @@ public class MenuActivity extends AppCompatActivity{
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
 
                 //CRIA TABELA
-                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros( titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
 
                 //APAGA ROTEIROS
                 bancoDeDados.execSQL("DELETE FROM roteiros;");
 
                 for (Roteiro r : roteiros) {
                     //INSERE MUSICA
-                    bancoDeDados.execSQL("INSERT INTO roteiros(titulo, conteudo, url_imagem) VALUES('" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
+                    bancoDeDados.execSQL("INSERT INTO roteiros(id, titulo, conteudo, url_imagem) VALUES('" + r.getId() + "', '" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
                 }
                 Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }

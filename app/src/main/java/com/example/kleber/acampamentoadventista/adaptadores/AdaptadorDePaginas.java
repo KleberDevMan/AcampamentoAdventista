@@ -1,5 +1,7 @@
 package com.example.kleber.acampamentoadventista.adaptadores;
 
+//import android.app.FragmentManager;
+//import android.app.FragmentManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;

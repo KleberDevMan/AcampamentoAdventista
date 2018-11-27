@@ -59,7 +59,7 @@ public class RoteiroActivity extends AppCompatActivity {
                     , MODE_PRIVATE, null);
 
             //RECUPERAR
-            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, conteudo, url_imagem FROM roteiros", null);
+            Cursor cursor = bancoDeDados.rawQuery("SELECT titulo, conteudo, url_imagem FROM roteiros ORDER BY id ASC", null);
 
             //INDICES DA TABELA
             int indiceTitulo = cursor.getColumnIndex("titulo");
