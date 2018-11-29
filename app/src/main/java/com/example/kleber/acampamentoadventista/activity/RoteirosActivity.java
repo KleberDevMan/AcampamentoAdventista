@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -51,6 +52,8 @@ public class RoteirosActivity extends AppCompatActivity {
 
         inicializaComponentes();
         configuraToolbar();
+
+//        alteraTabLayout();
 
         //SQLite
         try {
@@ -106,6 +109,32 @@ public class RoteirosActivity extends AppCompatActivity {
 
     }
 
+    private void alteraTabLayout() {
+        // Mario Velasco's code
+        tabLayout.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                int tabLayoutWidth = tabLayout.getWidth();
+
+                DisplayMetrics metrics = new DisplayMetrics();
+                RoteirosActivity.this.getWindowManager().getDefaultDisplay().getMetrics(metrics);
+                int deviceWidth = metrics.widthPixels;
+
+                if (tabLayoutWidth < deviceWidth)
+                {
+                    tabLayout.setTabMode(TabLayout.MODE_FIXED);
+                    tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+                } else
+                {
+                    tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
+                    tabLayout.setPadding(30,0,30,0);
+                }
+            }
+        });
+    }
+
     private void configuraToolbar() {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("");
@@ -120,6 +149,11 @@ public class RoteirosActivity extends AppCompatActivity {
         dicionario = new Bundle();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        alteraTabLayout();
+    }
 
     //INICIALIZO O FRAGMENTO ROTEIRO COM DADOS DO SQLITE
     private void inicializaRoteiroFragment(int posicao, Bundle dicionario, String titulo, String conteudo, String url_imagem) {

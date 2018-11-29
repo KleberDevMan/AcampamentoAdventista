@@ -2,12 +2,14 @@ package com.example.kleber.acampamentoadventista.activity;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -43,7 +45,6 @@ public class MenuActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-
         buscaDadosESalvaNaBaseLocal();
     }
 
@@ -67,11 +68,6 @@ public class MenuActivity extends AppCompatActivity {
         this.startActivity(intencao);
     }
 
-//    public void btnContatos(View botao) {
-//        Intent intencao = new Intent(this, ContatosActivity.class);
-//        this.startActivity(intencao);
-//    }
-
     //INFLANDO ITENS_DE_ MENU NA ACTION_BAR
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -81,6 +77,20 @@ public class MenuActivity extends AppCompatActivity {
         return true;
     }
 
+    //OUVINTE DOS BOTOES DO MENU 3 PONTINHOS
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.contatos:
+                //CHAMA A TELA DE CONTATOS
+                this.startActivity(new Intent(this, ContatosActivity.class));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    //BUSCA DADOS NO WEBSERVICE E SALVA NO SQLITE
     public void buscaDadosESalvaNaBaseLocal() {
 
         //SQLite
@@ -100,7 +110,6 @@ public class MenuActivity extends AppCompatActivity {
             //-------------------- BAIXA INFORMATIVOS -----------------------
             BuscaInformes buscaInformes = new BuscaInformes(this, bancoDeDados);
             buscaInformes.execute(urlInformes);
-
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,7 +166,8 @@ public class MenuActivity extends AppCompatActivity {
 
             List<Roteiro> roteiros = null;
 
-            Type collectionType = new TypeToken<List<Roteiro>>() {}.getType();
+            Type collectionType = new TypeToken<List<Roteiro>>() {
+            }.getType();
 
             try {
                 roteiros = gson.fromJson(buffer.toString(), collectionType);
@@ -176,7 +186,7 @@ public class MenuActivity extends AppCompatActivity {
             super.onPostExecute(roteiros);
 
             if (roteiros == null) {
-                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
             } else {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
 
@@ -190,7 +200,7 @@ public class MenuActivity extends AppCompatActivity {
                     //INSERE MUSICA
                     bancoDeDados.execSQL("INSERT INTO roteiros(id, titulo, conteudo, url_imagem) VALUES('" + r.getId() + "', '" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
                 }
-                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -244,7 +254,8 @@ public class MenuActivity extends AppCompatActivity {
 
             List<Musica> musicas = null;
 
-            Type collectionType = new TypeToken<List<Musica>>() {}.getType();
+            Type collectionType = new TypeToken<List<Musica>>() {
+            }.getType();
 
             try {
                 musicas = gson.fromJson(buffer.toString(), collectionType);
@@ -263,7 +274,7 @@ public class MenuActivity extends AppCompatActivity {
             super.onPostExecute(musicas);
 
             if (musicas == null) {
-                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
             } else {
 
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS musicas");
@@ -279,8 +290,7 @@ public class MenuActivity extends AppCompatActivity {
                     bancoDeDados.execSQL("INSERT INTO musicas(titulo, artista, letra, id, url_imagem) VALUES('" + m.getTitle() + "', '" + m.getArtist() + "', '" + m.getLyric() + "', '" + m.getId() + "','" + m.getUrlImage() + "') ");
                 }
 
-
-                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -334,7 +344,8 @@ public class MenuActivity extends AppCompatActivity {
 
             List<Informe> informes = null;
 
-            Type collectionType = new TypeToken<List<Informe>>() {}.getType();
+            Type collectionType = new TypeToken<List<Informe>>() {
+            }.getType();
 
             try {
                 informes = gson.fromJson(buffer.toString(), collectionType);
@@ -353,7 +364,7 @@ public class MenuActivity extends AppCompatActivity {
             super.onPostExecute(informes);
 
             if (informes == null) {
-                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
             } else {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS informes");
 
@@ -367,7 +378,7 @@ public class MenuActivity extends AppCompatActivity {
                     //INSERE MUSICA
                     bancoDeDados.execSQL("INSERT INTO informes(id, titulo, conteudo, url_imagem) VALUES('" + informe.getId() + "', '" + informe.getTitle() + "', '" + informe.getContent() + "', '" + informe.getUrlImage() + "') ");
                 }
-                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
+//                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }
         }
     }

@@ -45,7 +45,7 @@ public class ContatosActivity extends AppCompatActivity {
     }
 
     private void recuperarContatos() {
-        contatos.add(new Contato("Kleber (desenvolvedor do app)", "(63) 99250 - 4449"));
+        contatos.add(new Contato("Kleber (desenvolvedor do app)", "(63) 99259 - 4449"));
         contatos.add(new Contato("Isacc (organizador do evento)", "(63) XXXX - XXXX"));
     }
 

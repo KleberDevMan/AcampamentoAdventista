@@ -4,6 +4,7 @@
     <string name="roteiro">Script</string>
     <string name="compartilhar">Share</string>
     <string name="musicas">Music</string>
+    <string name="info">Informations</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
@@ -16,15 +17,15 @@
     <string name="news">News</string>
     <string name="contato">Contact</string>
     <string name="title_news">Journal of Retreat</string>
-    <string name="contatos">Contatos</string>
-    <string name="titulo_musicas">Músicas</string>
-    <string name="titulo_contatos">Contatos</string>
-    <string name="titulo_item_men_pesquisar">Pesquisar</string>
-    <string name="publicar">Publicar</string>
-    <string name="filtro">Filtro</string>
+    <string name="contatos">Contacts</string>
+    <string name="titulo_musicas">Musics</string>
+    <string name="titulo_contatos">Contacts</string>
+    <string name="titulo_item_men_pesquisar">Find</string>
+    <string name="publicar">Share</string>
+    <string name="filtro">Filter</string>
 
-    <string name="mandamentos">Mandamentos</string>
-    <string name="mensagem">Mensagem</string>
-    <string name="o_que_levar">O que levar</string>
-    <string name="regras">Regras</string>
+    <string name="mandamentos">Commandments</string>
+    <string name="mensagem">Menssages</string>
+    <string name="o_que_levar">What to take</string>
+    <string name="regras">Rules</string>
 </resources>
