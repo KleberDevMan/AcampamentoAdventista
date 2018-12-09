@@ -16,7 +16,7 @@
         android:fontFamily="@font/aldrich"
         android:gravity="center"
         android:text="Nome música"
-        android:textColor="@color/letra_musica"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -29,7 +29,7 @@
         android:fontFamily="@font/aldrich"
         android:gravity="center"
         android:text="Nome artista"
-        android:textColor="@color/letra_musica"
+        android:textColor="@color/celulaMusica"
         android:textSize="15sp" />
 
     <ScrollView

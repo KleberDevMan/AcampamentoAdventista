@@ -21,8 +21,9 @@
             android:layout_marginTop="25dp"
             android:gravity="center_vertical|center_horizontal"
             android:text="nome contato"
-            android:textColor="@android:color/white"
+            android:textColor="@color/titulo1"
             android:textSize="14sp"
+            android:textStyle="bold"
             app:fontFamily="@font/aldrich" />
 
         <TextView
@@ -33,7 +34,7 @@
             android:layout_margin="5dp"
             android:gravity="center_horizontal"
             android:text="3333 3333"
-            android:textColor="@android:color/darker_gray"
+            android:textColor="@color/titulo2"
             android:textSize="14sp"
             app:fontFamily="@font/aldrich" />
     </LinearLayout>

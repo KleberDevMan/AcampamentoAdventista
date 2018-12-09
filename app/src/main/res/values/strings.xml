@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Adventist camp</string>
+    <string name="app_name">Acamp IASD - JA</string>
     <string name="roteiro">Script</string>
     <string name="compartilhar">Share</string>
     <string name="musicas">Music</string>
@@ -16,7 +16,7 @@
     <string name="meditacao">Meditation</string>
     <string name="news">News</string>
     <string name="contato">Contact</string>
-    <string name="title_news">Journal of Retreat</string>
+    <string name="title_news">Videos</string>
     <string name="contatos">Contacts</string>
     <string name="titulo_musicas">Musics</string>
     <string name="titulo_contatos">Contacts</string>

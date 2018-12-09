@@ -1,13 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!--<color name="colorPrimary">#3F51B5</color>-->
+    <!--<color name="colorPrimaryDark">#002a36</color>-->
+    <!--<color name="colorDark2">#083542</color>-->
+    <!--<color name="colorAccent">#f3322d</color>-->
+    <!--<color name="bg">#00405e</color>-->
+    <!--<color name="bg2">#00405e</color>-->
+    <!--<color name="celulaMusica">#204e64</color>-->
+    <!--<color name="black">#000</color>-->
+    <!--<color name="letra_musica">#c7c7c7</color>-->
+    <!---->
+
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#002a36</color>
-    <color name="colorDark2">#083542</color>
-    <color name="colorAccent">#f3322d</color>
-    <color name="bg">#00405e</color>
-    <color name="bg2">#00405e</color>
-    <color name="celulaMusica">#204e64</color>
+    <color name="colorPrimaryDark">#252127</color>
+    <color name="colorDark2">#fefefe</color>
+    <color name="colorAccent">#c90604</color>
+    <color name="bg">#252127</color>
+    <!--<color name="bg2">#00405e</color>-->
+    <color name="celulaMusica">#3a353d</color>
     <color name="black">#000</color>
-    <color name="letra_musica">#c7c7c7</color>
+    <color name="titulo1">#e7e5e5</color>
+    <color name="titulo2">#d2d0d0</color>
+    <color name="letra_musica">#000</color>
+    <color name="tab_selected">#c90604</color>
 
 </resources>
