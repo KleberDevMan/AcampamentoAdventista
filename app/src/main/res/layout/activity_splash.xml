@@ -16,6 +16,6 @@
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:src="@drawable/juntos" />
+            android:src="@drawable/juntos_com_bg" />
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
