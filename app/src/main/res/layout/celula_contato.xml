@@ -11,32 +11,57 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/celula_nome_contato"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|center_horizontal"
-            android:layout_marginTop="25dp"
-            android:gravity="center_vertical|center_horizontal"
-            android:text="nome contato"
-            android:textColor="@color/titulo1"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:fontFamily="@font/aldrich" />
-
-        <TextView
-            android:id="@+id/celula_numero_contato"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imagem_contato"
+            android:layout_width="91dp"
+            android:layout_height="76dp"
             android:layout_gravity="center_vertical"
-            android:layout_margin="5dp"
-            android:gravity="center_horizontal"
-            android:text="3333 3333"
-            android:textColor="@color/titulo2"
-            android:textSize="14sp"
-            app:fontFamily="@font/aldrich" />
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="8dp"
+            android:src="@drawable/salvacaoeservico1"
+            app:civ_border_color="#ff000000"
+            app:civ_border_width="2dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.05"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/celula_nome_contato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_marginTop="25dp"
+                android:text="nome contato"
+                android:textColor="@color/titulo1"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:fontFamily="@font/aldrich" />
+
+            <TextView
+                android:id="@+id/celula_numero_contato"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="6dp"
+                android:text="3333 3333"
+                android:textColor="@color/titulo2"
+                android:textSize="14sp"
+                app:fontFamily="@font/aldrich" />
+        </LinearLayout>
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

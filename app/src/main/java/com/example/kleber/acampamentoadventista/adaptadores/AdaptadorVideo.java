@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.modelos.youtubepojo.Item;
@@ -54,6 +55,12 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
 
         String url = video.getSnippet().getThumbnails().getMedium().getUrl();
         Picasso.get().load(url).into(holder.capa);
+
+        try {
+            Picasso.get().load(video.getSnippet().getThumbnails().getMedium().getUrl()).into(holder.capa);
+        }catch (Exception e){
+            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+        }
 
     }
 

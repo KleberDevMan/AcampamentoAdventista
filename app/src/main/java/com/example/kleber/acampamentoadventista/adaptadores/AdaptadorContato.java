@@ -7,11 +7,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
-import com.example.kleber.acampamentoadventista.modelos.Contato;
+import com.example.kleber.acampamentoadventista.modelos.contactpojo.Contato;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class AdaptadorContato extends RecyclerView.Adapter<AdaptadorContato.MyViewHolder> {
 
@@ -36,8 +40,14 @@ public class AdaptadorContato extends RecyclerView.Adapter<AdaptadorContato.MyVi
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         Contato contato = contatos.get( position );
-        holder.nome.setText( contato.getNome() );
-        holder.numero.setText( contato.getNumero() );
+        holder.nome.setText( contato.getDescription());
+        holder.numero.setText( contato.getNumber());
+
+        try {
+            Picasso.get().load(contato.getLinkImage()).into(holder.imagem);
+        }catch (Exception e){
+            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+        }
 
     }
 
@@ -50,11 +60,13 @@ public class AdaptadorContato extends RecyclerView.Adapter<AdaptadorContato.MyVi
 
         TextView nome;
         TextView numero;
+        CircleImageView imagem;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             nome = itemView.findViewById(R.id.celula_nome_contato);
             numero = itemView.findViewById(R.id.celula_numero_contato);
+            imagem = itemView.findViewById(R.id.imagem_contato);
         }
     }
 

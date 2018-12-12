@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.kleber.acampamentoadventista.R;
 import com.example.kleber.acampamentoadventista.modelos.musicapojo.Musica;
@@ -50,8 +51,11 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
         holder.titulo.setText(musica.getTitle());
         holder.artista.setText(musica.getArtist());
 
-        String url = musica.getUrlImage();
-        Picasso.get().load(url).into(holder.imageView);
+        try {
+            Picasso.get().load(musica.getUrl()).into(holder.imageView);
+        }catch (Exception e){
+            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+        }
     }
 
     //RETORNO A QUANTIDADE DE ITENS QUE SERAO EXIBIDOR
