@@ -330,14 +330,14 @@
                         android:layout_marginBottom="8dp"
                         android:contentDescription="TODO"
                         app:layout_constraintVertical_bias="0.09"
-                        app:srcCompat="@drawable/news" />
+                        app:srcCompat="@drawable/icon_videos" />
 
                     <TextView
                         android:id="@+id/text_news"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center_horizontal"
-                        android:text="@string/news"
+                        android:text="@string/icon_videos"
                         android:textColor="@android:color/white"
                         android:textSize="16sp"
                         android:textStyle="bold"

@@ -47,6 +47,26 @@ public class InformesActivity extends AppCompatActivity {
         inicializaComponentes();
         configuraToolbar();
 
+        //RECUPERA AS INFORMAÇOES DO BANCO
+        recuperarInformacoes();
+
+        // CRIO O ADAPTER
+        adapter = new AdaptadorDePaginas(getSupportFragmentManager());
+
+        // SETO OS FRAGMENTOS NO ADPTER
+        adapter.AddFragment(oQueLevarFragment, getString(R.string.o_que_levar));
+        adapter.AddFragment(regrasFragment, getString(R.string.regras));
+        adapter.AddFragment(mensagemFragment, getString(R.string.mensagem));
+        adapter.AddFragment(mandamentosFragment, getString(R.string.mandamentos));
+
+        // SETO O ADAPTER NA VIEW PAGE
+        viewPager.setAdapter(adapter);
+        tabLayout.setupWithViewPager(viewPager);
+
+    }
+
+    //RECUPERA AS INFORMAÇOES DO BANCO
+    private void recuperarInformacoes() {
         //SQLite
         try {
             //ABRIR BANCO
@@ -83,20 +103,6 @@ public class InformesActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        // CRIO O ADAPTER
-        adapter = new AdaptadorDePaginas(getSupportFragmentManager());
-
-        // SETO OS FRAGMENTOS NO ADPTER
-        adapter.AddFragment(oQueLevarFragment, getString(R.string.o_que_levar));
-        adapter.AddFragment(regrasFragment, getString(R.string.regras));
-        adapter.AddFragment(mensagemFragment, getString(R.string.mensagem));
-        adapter.AddFragment(mandamentosFragment, getString(R.string.mandamentos));
-
-        // SETO O ADAPTER NA VIEW PAGE
-        viewPager.setAdapter(adapter);
-        tabLayout.setupWithViewPager(viewPager);
-
     }
 
     private void configuraToolbar() {

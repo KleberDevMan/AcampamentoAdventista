@@ -59,7 +59,7 @@ public class AdaptadorVideo extends RecyclerView.Adapter<AdaptadorVideo.MyViewHo
         try {
             Picasso.get().load(video.getSnippet().getThumbnails().getMedium().getUrl()).into(holder.capa);
         }catch (Exception e){
-            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
 
     }

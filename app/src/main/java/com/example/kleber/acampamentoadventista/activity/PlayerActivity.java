@@ -46,7 +46,6 @@ public class PlayerActivity extends YouTubeBaseActivity
         if (!b) {
             youTubePlayer.setPlayerStyle(YouTubePlayer.PlayerStyle.DEFAULT);
             youTubePlayer.loadVideo(idVideo);
-//            youTubePlayer.loadVideo("jO9-T_JGSeI");
         }
     }
     @Override

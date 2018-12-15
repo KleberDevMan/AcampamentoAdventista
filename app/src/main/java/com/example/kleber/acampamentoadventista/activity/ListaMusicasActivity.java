@@ -64,7 +64,6 @@ public class ListaMusicasActivity extends AppCompatActivity
         searchView.setOnSearchViewListener(this);
     }
 
-
     private void configuraToolbar() {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -78,7 +77,6 @@ public class ListaMusicasActivity extends AppCompatActivity
         searchView = findViewById(R.id.materialSearchView);
         dicionario = new Bundle();
     }
-
 
     //RECARREGA A LISTA COM TODAS AS MUSICAS
     private void recarregarMusicas() {
@@ -153,14 +151,6 @@ public class ListaMusicasActivity extends AppCompatActivity
         recyclerView.setAdapter(adaptadorMusicas);
         adaptadorMusicas.notifyDataSetChanged();
     }
-
-
-
-    //CONVERTE IMAGENS SALVAS NOS RECURSOS EM BITMAP
-//    private Bitmap carregaImagem(int id) {
-//        return BitmapFactory
-//                .decodeResource(getResources(), id);
-//    }
 
     //INFLANDO ITENS DE MENU NA ACTION_BAR
     @Override

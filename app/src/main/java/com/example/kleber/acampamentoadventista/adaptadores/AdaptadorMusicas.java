@@ -52,9 +52,9 @@ public class AdaptadorMusicas extends RecyclerView.Adapter<AdaptadorMusicas.Hold
         holder.artista.setText(musica.getArtist());
 
         try {
-            Picasso.get().load(musica.getUrl()).into(holder.imageView);
+            Picasso.get().load(musica.getUrlImage()).into(holder.imageView);
         }catch (Exception e){
-            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
     }
 

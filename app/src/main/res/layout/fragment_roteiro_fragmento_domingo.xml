@@ -23,7 +23,7 @@ tools:context=".fragmentos.roteiros.RoteiroSabadoFragment"
                 android:layout_gravity="center_horizontal"
                 android:layout_margin="6dp"
                 android:scaleType="fitCenter"
-                tools:src="@tools:sample/avatars[1]" />
+                tools:src="@drawable/image_pre_load" />
 
             <TextView
                 android:id="@+id/conteudo_roteiro_domingo"

@@ -2,6 +2,8 @@ package com.example.kleber.acampamentoadventista.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -44,6 +46,7 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
 
     private List<Item> videos = new ArrayList<>();
     private List<Item> videosPesquisa = new ArrayList<>();
+    private String linkPlaylistVideos = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +63,43 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
         searchView.setOnQueryTextListener(this);
         searchView.setOnSearchViewListener(this);
 
+        //PEGO O LINK DA PLAYLIST DE VIDEOS NO BANCO DE DADOS SQLITE
+        recuperaLinkParaPlaylistDeVideos();
+
         //BUSCA VIDEOS NA INTERNET
         recuperarVideos();
+    }
+
+    //RECUPERA O LINK PARA PLAYLIST DE VIDEOS E SETA NA VARIAVEL DE CLASSE
+    private void recuperaLinkParaPlaylistDeVideos() {
+        //SQLite
+        try {
+            //ABRIR BANCO
+            SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
+                    , MODE_PRIVATE, null);
+
+            //RECUPERAR
+            Cursor cursor = bancoDeDados.rawQuery("SELECT link FROM linkplaylistvideos ORDER BY link LIMIT 1", null);
+
+            //INDICES DA TABELA
+            int indiceLink = cursor.getColumnIndex("link");
+
+            //PERCORE TABELA
+            int i = 0;
+            cursor.moveToFirst();
+            while (cursor != null) {
+
+                String link = cursor.getString(indiceLink);
+
+                linkPlaylistVideos = link;
+
+                cursor.moveToNext();
+                i++;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void configuraToolbar() {
@@ -75,8 +113,6 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
         videos = new ArrayList<>();
         searchView = findViewById(R.id.materialSearchView);
     }
-
-
 
     //RECARREGA A LISTA COM TODAS OS VIDEOS
     private void recarregarVideos() {
@@ -94,7 +130,7 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
                 "&order=date" +
                 "&maxResults=20" +
                 "&key=AIzaSyDWg9KAPB1QFIWFMKIix7jyYt2DayNtaaQ" +
-                "&playlistId=PLdKdSz4_lV0rcBygal6Pb4CYL2YQDpNGK";
+                "&playlistId="+linkPlaylistVideos+"";
         buscaVideos.execute(url);
     }
 
@@ -105,7 +141,6 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
         recyclerVideos.setLayoutManager(new LinearLayoutManager(this));
         recyclerVideos.setAdapter(adaptadorVideo);
     }
-
 
     //LISTA OS VIDEOS POR PARAMETRO
     private void pesquisarVideos(String texto) {
@@ -160,7 +195,6 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
 
 
 
-
     // ----------- EVENTOS OnQueryTextListener (quando digita um texto na busca) ------------
     @Override
     public boolean onQueryTextSubmit(String query) {
@@ -193,12 +227,6 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
 
 
 
-
-
-
-
-
-
     // ----------- EVENTOS RecyclerView ------------
     @Override
     public void onItemClick(View view, int position) {
@@ -217,12 +245,10 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
         i.putExtra("descricao", video.getSnippet().getDescription());
         startActivity(i);
     }
-
     @Override
     public void onLongItemClick(View view, int position) {
 
     }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -230,16 +256,7 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
 
 
 
-
-
-
-
-
-
-
-
-
-
+    //TREAD QUE BUSCA OS VIDEOS NO YOUTUBE
     class BuscaVideos extends AsyncTask<String, Void, YouTubeResult> {
 
         private ListaVideosActivity listaVideosActivity;
@@ -307,5 +324,4 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
                 configurarRecyclerView();
         }
     }
-
 }

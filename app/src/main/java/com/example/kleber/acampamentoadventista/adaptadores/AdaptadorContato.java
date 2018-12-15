@@ -46,7 +46,7 @@ public class AdaptadorContato extends RecyclerView.Adapter<AdaptadorContato.MyVi
         try {
             Picasso.get().load(contato.getLinkImage()).into(holder.imagem);
         }catch (Exception e){
-            Toast.makeText(context, "Erro ao carregar imagem(ns).", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
 
     }

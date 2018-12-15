@@ -205,9 +205,7 @@ public class ContatosActivity extends AppCompatActivity {
         protected void onPostExecute(List<Contato> contatos) {
             super.onPostExecute(contatos);
 
-            if (contatos == null) {
-//                Toast.makeText(activity, "Não foi possível sincronizar.", Toast.LENGTH_LONG).show();
-            } else {
+            if (contatos != null) {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS contatos");
 
                 //CRIA TABELA
@@ -220,7 +218,6 @@ public class ContatosActivity extends AppCompatActivity {
                     //INSERE CONTATO
                     bancoDeDados.execSQL("INSERT INTO contatos(id, description, number, email, url_imagem) VALUES('" + contato.getId() + "', '" + contato.getDescription() + "', '" + contato.getNumber() + "', '" + contato.getEmail() + "', '" + contato.getLinkImage() + "') ");
                 }
-//                Toast.makeText(activity, "SINCRONIZADO.", Toast.LENGTH_LONG).show();
             }
         }
     }
