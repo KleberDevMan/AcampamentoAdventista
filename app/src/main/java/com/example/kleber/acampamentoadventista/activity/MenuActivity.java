@@ -194,14 +194,11 @@ public class MenuActivity extends AppCompatActivity {
         protected void onPostExecute(List<Roteiro> roteiros) {
             super.onPostExecute(roteiros);
 
-            if (roteiros == null) {
+            if (roteiros != null) {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
 
                 //CRIA TABELA
                 bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
-//
-//                //APAGA ROTEIROS
-//                bancoDeDados.execSQL("DELETE FROM roteiros;");
 
                 for (Roteiro r : roteiros) {
                     //INSERE MUSICA
@@ -279,7 +276,7 @@ public class MenuActivity extends AppCompatActivity {
         protected void onPostExecute(List<Musica> musicas) {
             super.onPostExecute(musicas);
 
-            if (musicas == null) {
+            if (musicas != null) {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS musicas");
 
                 //CRIA TABELA
@@ -364,14 +361,11 @@ public class MenuActivity extends AppCompatActivity {
         protected void onPostExecute(List<Informe> informes) {
             super.onPostExecute(informes);
 
-            if (informes == null) {
+            if (informes != null) {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS informes");
 
                 //CRIA TABELA
                 bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS informes(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
-
-//                //APAGA ROTEIROS
-//                bancoDeDados.execSQL("DELETE FROM informes;");
 
                 for (Informe informe : informes) {
                     //INSERE MUSICA

@@ -1,5 +1,6 @@
 package com.example.kleber.acampamentoadventista.activity;
 
+import android.app.ProgressDialog;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
@@ -59,6 +60,12 @@ public class ContatosActivity extends AppCompatActivity {
         //BUSCA NO WEBSERVICE E SALVA NO BANCO LOCAL
         buscaDadosESalvaNaBaseLocal();
 
+//        exibeListaDeContatos();
+
+
+    }
+
+    private void exibeListaDeContatos() {
         //PEGA OS DADOS DO BANCO E COLOCA EM MEMORIA
         recuperarContatos();
 
@@ -68,6 +75,7 @@ public class ContatosActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(adaptadorContato);
     }
+
 
     private void recuperarContatos() {
         //SQLite
@@ -142,10 +150,24 @@ public class ContatosActivity extends AppCompatActivity {
 
         private AppCompatActivity activity;
         private SQLiteDatabase bancoDeDados;
+        private ProgressDialog vrProgress = null;
 
         public BuscaContatos(AppCompatActivity activity, SQLiteDatabase bancoDeDados) {
             this.activity = activity;
             this.bancoDeDados = bancoDeDados;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            vrProgress = new ProgressDialog(activity);
+            vrProgress.setCancelable(false);
+            vrProgress.setCanceledOnTouchOutside(false);
+            vrProgress.setMessage("Carregando...");
+            vrProgress.setTitle("Aguarde!");
+            vrProgress.show();
+
         }
 
         @Override
@@ -204,6 +226,7 @@ public class ContatosActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<Contato> contatos) {
             super.onPostExecute(contatos);
+            vrProgress.dismiss();
 
             if (contatos != null) {
                 bancoDeDados.execSQL("DROP TABLE IF EXISTS contatos");
@@ -219,6 +242,10 @@ public class ContatosActivity extends AppCompatActivity {
                     bancoDeDados.execSQL("INSERT INTO contatos(id, description, number, email, url_imagem) VALUES('" + contato.getId() + "', '" + contato.getDescription() + "', '" + contato.getNumber() + "', '" + contato.getEmail() + "', '" + contato.getLinkImage() + "') ");
                 }
             }
+
+
+            //PEGA OS DADOS DO BANCO E COLOCA EM MEMORIA
+            exibeListaDeContatos();
         }
     }
 
