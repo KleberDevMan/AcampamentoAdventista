@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:421418420928:android:c8d99bd8463c7157",
         "android_client_info": {
-          "package_name": "com.example.kleber.acampamentoadventista"
+          "package_name": "br.com.kleberjunio.acampamentoadventista"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "421418420928-g1g0pm3aaq73m3ampms6gph81bkb5mp2.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.kleber.acampamentoadventista",
+            "package_name": "br.com.kleberjunio.acampamentoadventista",
             "certificate_hash": "dd4eb6ca957203396d933a8630938d59396d7343"
           }
         },
