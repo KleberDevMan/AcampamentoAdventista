@@ -129,7 +129,7 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
                 "playlistItems?part=snippet" +
                 "&order=date" +
                 "&maxResults=20" +
-                "&key=AIzaSyDWg9KAPB1QFIWFMKIix7jyYt2DayNtaaQ" +
+                "&key=AIzaSyD_NMQDdxCfCO-iC-Ftl4F9Cb6KblhC71g" +
                 "&playlistId="+linkPlaylistVideos+"";
         buscaVideos.execute(url);
     }
@@ -282,7 +282,7 @@ public class ListaVideosActivity extends AppCompatActivity implements MaterialSe
         @Override
         protected YouTubeResult doInBackground(String... strings) {
 
-            String stringUrl = strings[0];
+                String stringUrl = strings[0];
             InputStream inputStream = null;
             InputStreamReader inputStreamReader = null;
             StringBuffer buffer = null;
