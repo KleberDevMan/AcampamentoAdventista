@@ -60,177 +60,317 @@ public class MenuActivity extends AppCompatActivity {
         SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
-//        boolean primeiroAcesso = preferences.getBoolean("primeiroAcesso", true);
-//
-//        if (primeiroAcesso) {
-//
-//            buscaESalvaNoBancoPelaPrimeiraVez();
-//
-//        } else {
-            buscaDadosESalvaNaBaseLocal();
-//
-////            Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
-//        }
+        boolean primeiroAcesso = preferences.getBoolean("primeiroAcesso", true);
+
+        if (primeiroAcesso) {
+
+            buscaESalvaNoBancoPelaPrimeiraVez();
+
+        } else {
+//            buscaDadosESalvaNaBaseLocal();
+
+            Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
+        }
 
     }
 
-//    private void buscaESalvaNoBancoPelaPrimeiraVez() {
-//
-//        //busquei e salvei no banco
-//        try {
-//            //CRIA/ABRE BANCO LOCAL
-//            SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
-//                    , MODE_PRIVATE, null);
-//
-//            //-------------------- ARMAZENAMENTO INICIAL -----------------------
-//            ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso =
-//                    new ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(this, bancoDeDados);
-//            threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso.execute(urlPlaylistVideos);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//
-//        Toast.makeText(this, "PRIMEIRA VEZ", Toast.LENGTH_SHORT).show();
-//
-//        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
-//        SharedPreferences.Editor editor = preferences.edit();
-//
-//        editor.putBoolean("primeiroAcesso", false);
-//        editor.apply();
-//
-//    }
+    private void buscaESalvaNoBancoPelaPrimeiraVez() {
+
+        //busquei e salvei no banco
+        try {
+            //CRIA/ABRE BANCO LOCAL
+            SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
+                    , MODE_PRIVATE, null);
+
+            //-------------------- ARMAZENAMENTO INICIAL -----------------------
+            ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso =
+                    new ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(this, bancoDeDados);
+            threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso.execute(urlPlaylistVideos);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
 
+        Toast.makeText(this, "PRIMEIRA VEZ", Toast.LENGTH_SHORT).show();
 
-//    //TREAD QUE BUSCA OS ROTEIROS
-//    class ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso extends AsyncTask<String, Void, List<Roteiro>> {
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+        editor.putBoolean("primeiroAcesso", false);
+        editor.apply();
+
+    }
+
+
+    //TREAD QUE BUSCA OS ROTEIROS
+    class ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso extends AsyncTask<String, Void, List<Roteiro>> {
+
+        private AppCompatActivity activity = null;
+        private SQLiteDatabase bancoDeDados;
+        private ProgressDialog vrProgress = null;
+
+        List<Roteiro> roteiros = null;
+        List<Musica> musicas = null;
+        List<Informe> informes = null;
+        String urlVideos = null;
+
+
+        public ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(AppCompatActivity activity, SQLiteDatabase bancoDeDados) {
+            this.activity = activity;
+            this.bancoDeDados = bancoDeDados;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            vrProgress = new ProgressDialog(activity);
+            vrProgress.setCancelable(false);
+            vrProgress.setCanceledOnTouchOutside(false);
+            vrProgress.setMessage("Carregando...");
+            vrProgress.setTitle("Aguarde!");
+            vrProgress.show();
+
+        }
+
+        @Override
+        protected List<Roteiro> doInBackground(String... strings) {
+
+            //----------- ROTEIROS -----------------------------------------------------------------
+            InputStream inputStream = null;
+            InputStreamReader inputStreamReader = null;
+            StringBuffer buffer = null;
+            Gson gson = new Gson();
+
+            try {
+                URL url = new URL(urlRoteiros);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Type collectionTypeRoteiros = new TypeToken<List<Roteiro>>() {
+            }.getType();
+
+            try {
+                roteiros = gson.fromJson(buffer.toString(), collectionTypeRoteiros);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //----------- MUSICAS -----------------------------------------------------------------
+            try {
+                URL url = new URL(urlMusicas);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Type collectionTypeMusicas = new TypeToken<List<Musica>>() {
+            }.getType();
+
+            try {
+                musicas = gson.fromJson(buffer.toString(), collectionTypeMusicas);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            //----------- INFORMES -----------------------------------------------------------------
+            try {
+                URL url = new URL(urlInformes);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            Type collectionTypeInformes = new TypeToken<List<Informe>>() {
+            }.getType();
+
+            try {
+                informes = gson.fromJson(buffer.toString(), collectionTypeInformes);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+            //----------- URL VIDEOS -----------------------------------------------------------------
+            try {
+                URL url = new URL(urlVideos);
+                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+
+                // Recupera os dados em Bytes
+                inputStream = conexao.getInputStream();
+
+                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+                inputStreamReader = new InputStreamReader(inputStream);
+
+                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+                BufferedReader reader = new BufferedReader(inputStreamReader);
+                buffer = new StringBuffer();
+                String linha = "";
+
+                while ((linha = reader.readLine()) != null) {
+                    buffer.append(linha);
+                }
+
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 //
-//        private AppCompatActivity activity = null;
-//        private SQLiteDatabase bancoDeDados;
-//        private ProgressDialog vrProgress = null;
+//            Type collectionTypeVideos = new TypeToken<List<UrlPlaylistVideo>>() {
+//            }.getType();
 //
-//        List<Roteiro> roteiros;
-//        List<Musica> musicas;
-//        List<Informe> informes;
-//        String urlVideos;
-//
-//
-//        public ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(AppCompatActivity activity, SQLiteDatabase bancoDeDados) {
-//            this.activity = activity;
-//            this.bancoDeDados = bancoDeDados;
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//            vrProgress = new ProgressDialog(activity);
-//            vrProgress.setCancelable(false);
-//            vrProgress.setCanceledOnTouchOutside(false);
-//            vrProgress.setMessage("Carregando...");
-//            vrProgress.setTitle("Aguarde!");
-//            vrProgress.show();
-//
-//        }
-//
-//        @Override
-//        protected List<Roteiro> doInBackground(String... strings) {
-////
-////            String stringUrl = strings[0];
-////            InputStream inputStream = null;
-////            InputStreamReader inputStreamReader = null;
-////            StringBuffer buffer = null;
-////
-////            try {
-////
-////                URL url = new URL(stringUrl);
-////                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
-////
-////                // Recupera os dados em Bytes
-////                inputStream = conexao.getInputStream();
-////
-////                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
-////                inputStreamReader = new InputStreamReader(inputStream);
-////
-////                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
-////                BufferedReader reader = new BufferedReader(inputStreamReader);
-////                buffer = new StringBuffer();
-////                String linha = "";
-////
-////                while ((linha = reader.readLine()) != null) {
-////                    buffer.append(linha);
-////                }
-////
-////            } catch (MalformedURLException e) {
-////                e.printStackTrace();
-////            } catch (IOException e) {
-////                e.printStackTrace();
-////            }
-////
-////            Gson gson = new Gson();
-////
-////            List<Roteiro> roteiros = null;
-////
-////            Type collectionType = new TypeToken<List<Roteiro>>() {
-////            }.getType();
-////
-////            try {
-////                roteiros = gson.fromJson(buffer.toString(), collectionType);
-////            } catch (Exception e) {
-////                e.printStackTrace();
-////            }
-////
-////            if (roteiros == null)
-////                return null;
-////            else
-////                return roteiros;
-//
-//
-//            //----------- ROTED
-//
-//            return null;
-//        }
-//
-//        @Override
-//        protected void onPostExecute(List<Roteiro> roteiros) {
-//            super.onPostExecute(roteiros);
-//
-//
-//            if (roteiros != null) {
-//                bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
-//
-//                //CRIA TABELA
-//                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
-//
-//                for (Roteiro r : roteiros) {
-//                    //INSERE MUSICA
-//                    bancoDeDados.execSQL("INSERT INTO roteiros(id, titulo, conteudo, url_imagem) VALUES('" + r.getId() + "', '" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
-//                }
+//            try {
+//                urlVideos = gson.fromJson(buffer.toString(), collectionTypeVideos);
+////                urlVideos = urlVideos.get(0).getLink();
+//            } catch (Exception e) {
+//                e.printStackTrace();
 //            }
-//        }
-//    }
 
 
 
 
+            List<UrlPlaylistVideo> urlPlaylistVideos = null;
 
+            Type collectionTypeVideos = new TypeToken<List<UrlPlaylistVideo>>() {
+            }.getType();
 
+            try {
+                urlPlaylistVideos = gson.fromJson(buffer.toString(), collectionTypeVideos);
+                urlVideos = urlPlaylistVideos.get(0).getLink();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
+//            if (urlPlaylistVideos == null)
+//                return null;
+//            else
+//                return urlPlaylistVideos.get(0).getLink();
 
+            return null;
+        }
 
+        @Override
+        protected void onPostExecute(List<Roteiro> parametro) {
+            super.onPostExecute(roteiros);
 
+            //----------- ROTEIROS -----------------------------------------------------------------
+            if (roteiros != null) {
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
 
+                //CRIA TABELA
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
 
+                for (Roteiro r : roteiros) {
+                    //INSERE MUSICA
+                    bancoDeDados.execSQL("INSERT INTO roteiros(id, titulo, conteudo, url_imagem) VALUES('" + r.getId() + "', '" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
+                }
+            }
 
+            //----------- MUSICAS -----------------------------------------------------------------
+            if (musicas != null) {
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS musicas");
 
+                //CRIA TABELA
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS musicas ( titulo VARCHAR, artista VARCHAR, letra VARCHAR, id INTEGER, url_imagem VARCHAR)");
 
+//                //APAGA MUSICAS
+//                bancoDeDados.execSQL("DELETE FROM musicas;");
 
+                for (Musica m : musicas) {
+                    //INSERE MUSICA
 
+                    bancoDeDados.execSQL("INSERT INTO musicas(titulo, artista, letra, id, url_imagem) VALUES('" + m.getTitle() + "', '" + m.getArtist() + "', '" + m.getLyric() + "', '" + m.getId() + "','" + m.getUrlImage() + "') ");
+                }
+            }
 
+            //----------- INFORMES -----------------------------------------------------------------
+            if (informes != null) {
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS informes");
 
+                //CRIA TABELA
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS informes(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
 
+                for (Informe informe : informes) {
+                    //INSERE MUSICA
+                    bancoDeDados.execSQL("INSERT INTO informes(id, titulo, conteudo, url_imagem) VALUES('" + informe.getId() + "', '" + informe.getTitle() + "', '" + informe.getContent() + "', '" + informe.getUrlImage() + "') ");
+                }
+            }
+
+            //----------- URL LINK -----------------------------------------------------------------
+            if (urlVideos != null) {
+                bancoDeDados.execSQL("DROP TABLE IF EXISTS linkplaylistvideos");
+
+                //CRIA TABELA
+                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS linkplaylistvideos(link VARCHAR)");
+//
+//                //APAGA TABELA
+//                bancoDeDados.execSQL("DELETE FROM linkplaylistvideos;");
+
+                //INSERE NA TABELA
+                bancoDeDados.execSQL("INSERT INTO linkplaylistvideos(link) VALUES('" + urlVideos + "')");
+            }
+
+            vrProgress.dismiss();
+        }
+    }
 
 
     public void btnMusicas(View botao) {
@@ -274,32 +414,6 @@ public class MenuActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     //BUSCA DADOS NO WEBSERVICE E SALVA NO SQLITE
