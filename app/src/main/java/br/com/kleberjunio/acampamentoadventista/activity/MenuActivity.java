@@ -1,6 +1,9 @@
 package br.com.kleberjunio.acampamentoadventista.activity;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.sqlite.SQLiteDatabase;
 import android.media.MediaPlayer;
 import android.net.wifi.p2p.WifiP2pManager;
@@ -18,6 +21,7 @@ import br.com.kleberjunio.acampamentoadventista.modelos.informepojo.Informe;
 import br.com.kleberjunio.acampamentoadventista.modelos.musicapojo.Musica;
 import br.com.kleberjunio.acampamentoadventista.modelos.roteiropojo.Roteiro;
 import br.com.kleberjunio.acampamentoadventista.modelos.url_playlist_videos_pojo.UrlPlaylistVideo;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -45,13 +49,189 @@ public class MenuActivity extends AppCompatActivity {
     //WEB_SERVICE: LINK
     private String urlPlaylistVideos = "https://fierce-inlet-45074.herokuapp.com/link_playlist_videos.json";
 
+    //Primerio acesso
+//    private boolean primeiroAcesso;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
-        buscaDadosESalvaNaBaseLocal();
+
+        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+
+//        boolean primeiroAcesso = preferences.getBoolean("primeiroAcesso", true);
+//
+//        if (primeiroAcesso) {
+//
+//            buscaESalvaNoBancoPelaPrimeiraVez();
+//
+//        } else {
+            buscaDadosESalvaNaBaseLocal();
+//
+////            Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
+//        }
+
     }
+
+//    private void buscaESalvaNoBancoPelaPrimeiraVez() {
+//
+//        //busquei e salvei no banco
+//        try {
+//            //CRIA/ABRE BANCO LOCAL
+//            SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
+//                    , MODE_PRIVATE, null);
+//
+//            //-------------------- ARMAZENAMENTO INICIAL -----------------------
+//            ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso =
+//                    new ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(this, bancoDeDados);
+//            threadBuscaDadosESalvaNoBancoNoPrimeiroAcesso.execute(urlPlaylistVideos);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//
+//        Toast.makeText(this, "PRIMEIRA VEZ", Toast.LENGTH_SHORT).show();
+//
+//        SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
+//        SharedPreferences.Editor editor = preferences.edit();
+//
+//        editor.putBoolean("primeiroAcesso", false);
+//        editor.apply();
+//
+//    }
+
+
+
+//    //TREAD QUE BUSCA OS ROTEIROS
+//    class ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso extends AsyncTask<String, Void, List<Roteiro>> {
+//
+//        private AppCompatActivity activity = null;
+//        private SQLiteDatabase bancoDeDados;
+//        private ProgressDialog vrProgress = null;
+//
+//        List<Roteiro> roteiros;
+//        List<Musica> musicas;
+//        List<Informe> informes;
+//        String urlVideos;
+//
+//
+//        public ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso(AppCompatActivity activity, SQLiteDatabase bancoDeDados) {
+//            this.activity = activity;
+//            this.bancoDeDados = bancoDeDados;
+//        }
+//
+//        @Override
+//        protected void onPreExecute() {
+//            super.onPreExecute();
+//
+//            vrProgress = new ProgressDialog(activity);
+//            vrProgress.setCancelable(false);
+//            vrProgress.setCanceledOnTouchOutside(false);
+//            vrProgress.setMessage("Carregando...");
+//            vrProgress.setTitle("Aguarde!");
+//            vrProgress.show();
+//
+//        }
+//
+//        @Override
+//        protected List<Roteiro> doInBackground(String... strings) {
+////
+////            String stringUrl = strings[0];
+////            InputStream inputStream = null;
+////            InputStreamReader inputStreamReader = null;
+////            StringBuffer buffer = null;
+////
+////            try {
+////
+////                URL url = new URL(stringUrl);
+////                HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
+////
+////                // Recupera os dados em Bytes
+////                inputStream = conexao.getInputStream();
+////
+////                //inputStreamReader lê os dados em Bytes e decodifica para caracteres
+////                inputStreamReader = new InputStreamReader(inputStream);
+////
+////                //Objeto utilizado para leitura dos caracteres do InpuStreamReader
+////                BufferedReader reader = new BufferedReader(inputStreamReader);
+////                buffer = new StringBuffer();
+////                String linha = "";
+////
+////                while ((linha = reader.readLine()) != null) {
+////                    buffer.append(linha);
+////                }
+////
+////            } catch (MalformedURLException e) {
+////                e.printStackTrace();
+////            } catch (IOException e) {
+////                e.printStackTrace();
+////            }
+////
+////            Gson gson = new Gson();
+////
+////            List<Roteiro> roteiros = null;
+////
+////            Type collectionType = new TypeToken<List<Roteiro>>() {
+////            }.getType();
+////
+////            try {
+////                roteiros = gson.fromJson(buffer.toString(), collectionType);
+////            } catch (Exception e) {
+////                e.printStackTrace();
+////            }
+////
+////            if (roteiros == null)
+////                return null;
+////            else
+////                return roteiros;
+//
+//
+//            //----------- ROTED
+//
+//            return null;
+//        }
+//
+//        @Override
+//        protected void onPostExecute(List<Roteiro> roteiros) {
+//            super.onPostExecute(roteiros);
+//
+//
+//            if (roteiros != null) {
+//                bancoDeDados.execSQL("DROP TABLE IF EXISTS roteiros");
+//
+//                //CRIA TABELA
+//                bancoDeDados.execSQL("CREATE TABLE IF NOT EXISTS roteiros(id INTEGER, titulo VARCHAR, conteudo VARCHAR, url_imagem VARCHAR )");
+//
+//                for (Roteiro r : roteiros) {
+//                    //INSERE MUSICA
+//                    bancoDeDados.execSQL("INSERT INTO roteiros(id, titulo, conteudo, url_imagem) VALUES('" + r.getId() + "', '" + r.getTitle() + "', '" + r.getContent() + "', '" + r.getUrlImage() + "') ");
+//                }
+//            }
+//        }
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void btnMusicas(View botao) {
         Intent intencao = new Intent(this, ListaMusicasActivity.class);
@@ -94,6 +274,33 @@ public class MenuActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     //BUSCA DADOS NO WEBSERVICE E SALVA NO SQLITE
     public void buscaDadosESalvaNaBaseLocal() {

@@ -6,8 +6,8 @@
     android:background="@drawable/bg_menu"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/AppTheme"
     tools:context=".activity.ContatosActivity">
+    <!--android:theme="@style/AppTheme"-->
 
     <TextView
         android:id="@+id/tituloContatos"

@@ -5,14 +5,14 @@
 
     <!-- recursos necessarios -->
     <!-- so vai aparecer na play store para celulares com camera -->
-    <uses-feature
-        android:name="android.hardware.camera2"
-        android:required="true" />
+    <!--<uses-feature-->
+        <!--android:name="android.hardware.camera2"-->
+        <!--android:required="true" />-->
 
     <!-- permissoes necessarias -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!--<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />-->
+    <!--<uses-permission android:name="android.permission.CAMERA" />-->
 
     <application
         android:allowBackup="true"
@@ -27,8 +27,7 @@
         <activity
             android:name=".activity.ListaMusicasActivity"
             android:parentActivityName=".activity.MenuActivity"
-            android:theme="@style/AppTheme2"
-            tools:targetApi="jelly_bean" />
+            android:theme="@style/AppTheme2" />
 
         <meta-data
             android:name="preloaded_fonts"
@@ -37,23 +36,20 @@
         <activity
             android:name=".activity.RoteirosActivity"
             android:parentActivityName=".activity.MenuActivity"
-            tools:targetApi="jelly_bean" />
+            />
         <activity
             android:name=".activity.ListaVideosActivity"
             android:theme="@style/AppTheme2" />
         <activity
             android:name=".activity.InformesActivity"
-            android:parentActivityName=".activity.MenuActivity"
-            tools:targetApi="jelly_bean" />
+            android:parentActivityName=".activity.MenuActivity" />
         <activity
             android:name=".activity.ContatosActivity"
-            android:parentActivityName=".activity.MenuActivity"
-            tools:targetApi="jelly_bean" />
+            android:parentActivityName=".activity.MenuActivity" />
         <activity android:name=".activity.PlayerActivity" />
         <activity
             android:name=".activity.MusicaActivity"
-            android:parentActivityName=".activity.ListaMusicasActivity"
-            tools:targetApi="jelly_bean" />
+            android:parentActivityName=".activity.ListaMusicasActivity" />
         <activity android:name=".activity.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
