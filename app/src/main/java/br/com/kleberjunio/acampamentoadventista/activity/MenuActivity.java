@@ -67,7 +67,7 @@ public class MenuActivity extends AppCompatActivity {
             buscaESalvaNoBancoPelaPrimeiraVez();
 
         } else {
-//            buscaDadosESalvaNaBaseLocal();
+            buscaDadosESalvaNaBaseLocal();
 
             Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
         }
@@ -250,7 +250,7 @@ public class MenuActivity extends AppCompatActivity {
 
             //----------- URL VIDEOS -----------------------------------------------------------------
             try {
-                URL url = new URL(urlVideos);
+                URL url = new URL(urlPlaylistVideos);
                 HttpURLConnection conexao = (HttpURLConnection) url.openConnection();
 
                 // Recupera os dados em Bytes
@@ -273,36 +273,45 @@ public class MenuActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
+//            List<UrlPlaylistVideo> urlPlaylistVideos = null;
 //
 //            Type collectionTypeVideos = new TypeToken<List<UrlPlaylistVideo>>() {
 //            }.getType();
+
+
+//            List<UrlPlaylistVideo> urlPlaylistVideosPrimeiroAcesso = null;
+//
+//            Type collectionTypeVideosPrimeiroAcesso = new TypeToken<List<UrlPlaylistVideo>>() {
+//            }.getType();
 //
 //            try {
-//                urlVideos = gson.fromJson(buffer.toString(), collectionTypeVideos);
-////                urlVideos = urlVideos.get(0).getLink();
+//                urlPlaylistVideosPrimeiroAcesso = gson.fromJson(buffer.toString(), collectionTypeVideosPrimeiroAcesso);
 //            } catch (Exception e) {
 //                e.printStackTrace();
 //            }
+//
+//            if (urlPlaylistVideosPrimeiroAcesso != null) {
+//                urlVideos = urlPlaylistVideosPrimeiroAcesso.get(0).getLink();
+//            }
 
 
+            Gson gson2 = new Gson();
 
+            List<UrlPlaylistVideo> urlPlaylistVideos2 = null;
 
-            List<UrlPlaylistVideo> urlPlaylistVideos = null;
-
-            Type collectionTypeVideos = new TypeToken<List<UrlPlaylistVideo>>() {
+            Type collectionType2 = new TypeToken<List<UrlPlaylistVideo>>() {
             }.getType();
 
             try {
-                urlPlaylistVideos = gson.fromJson(buffer.toString(), collectionTypeVideos);
-                urlVideos = urlPlaylistVideos.get(0).getLink();
+                urlPlaylistVideos2 = gson2.fromJson(buffer.toString(), collectionType2);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-//            if (urlPlaylistVideos == null)
-//                return null;
-//            else
-//                return urlPlaylistVideos.get(0).getLink();
+            if (urlPlaylistVideos2 != null) {
+                urlVideos = urlPlaylistVideos2.get(0).getLink();
+            }
 
             return null;
         }
