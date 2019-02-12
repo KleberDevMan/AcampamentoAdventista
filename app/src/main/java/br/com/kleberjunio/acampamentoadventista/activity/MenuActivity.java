@@ -63,20 +63,17 @@ public class MenuActivity extends AppCompatActivity {
         boolean primeiroAcesso = preferences.getBoolean("primeiroAcesso", true);
 
         if (primeiroAcesso) {
-
             buscaESalvaNoBancoPelaPrimeiraVez();
-
         } else {
             buscaDadosESalvaNaBaseLocal();
-
-            Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, "nao mais a primeira vez", Toast.LENGTH_SHORT).show();
         }
 
     }
 
     private void buscaESalvaNoBancoPelaPrimeiraVez() {
 
-        //busquei e salvei no banco
+        //BUSCA E SALVA NO BANCO
         try {
             //CRIA/ABRE BANCO LOCAL
             SQLiteDatabase bancoDeDados = openOrCreateDatabase("app"
@@ -91,19 +88,16 @@ public class MenuActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
-        Toast.makeText(this, "PRIMEIRA VEZ", Toast.LENGTH_SHORT).show();
-
+//        Toast.makeText(this, "PRIMEIRA VEZ", Toast.LENGTH_SHORT).show();
         SharedPreferences preferences = getSharedPreferences("preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
 
         editor.putBoolean("primeiroAcesso", false);
         editor.apply();
-
     }
 
 
-    //TREAD QUE BUSCA OS ROTEIROS
+    //TREAD QUE BUSCA TODOS OS DADOS NO PRIMEIRO ACESSO ( RODA APENAS UMA VEZ )
     class ThreadBuscaDadosESalvaNoBancoNoPrimeiroAcesso extends AsyncTask<String, Void, List<Roteiro>> {
 
         private AppCompatActivity activity = null;
@@ -381,7 +375,7 @@ public class MenuActivity extends AppCompatActivity {
         }
     }
 
-
+    // ACAO DOS BOTOES DO MENU
     public void btnMusicas(View botao) {
         Intent intencao = new Intent(this, ListaMusicasActivity.class);
         this.startActivity(intencao);
@@ -425,7 +419,7 @@ public class MenuActivity extends AppCompatActivity {
     }
 
 
-    //BUSCA DADOS NO WEBSERVICE E SALVA NO SQLITE
+    //BUSCA DADOS NO WEBSERVICE E SALVA NO SQLITE ( CHAMADO SEMPRE QUE O USUÁRIO ENTRA NO MENU )
     public void buscaDadosESalvaNaBaseLocal() {
 
         //SQLite
